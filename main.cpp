@@ -14,16 +14,14 @@
 /* --------- Structures --------- */
 typedef void (*GameStateCallback)();
 
-/* --------- Settings ----------- */
-GLfloat mouseSensitivity = 0.12;
-
-
 /* ---------- Consts ------------ */
 const Vector x_axis(1, 0, 0),
 	  y_axis(0, 1, 0),
 	  z_axis(0, 0, 1);
 
 /* --------- Variables ---------- */
+// settings
+GLfloat mouse_sensitivity = 0.12;
 
 // game
 int game_state					= GAME_STATE_RUN,
@@ -45,6 +43,15 @@ int window_width				= 800,
 
 // color
 Color background_color			= Color(0, 0, 0, 0);
+
+// keyboard state
+bool keys[256];				// normal keys
+bool spkeys[256];			// special keys
+
+// mouse state
+bool mouse_pressed[3];		// MOUSE_LEFT_BUTTON, MOUSE_MIDDLE_BUTTON, MOUSE_RIGHT_BUTTON
+int mouse_pos_x, mouse_pos_y;
+
 
 /* -------- Function declarations ---------- */
 void doCubeRotate(GLfloat x, GLfloat y);
@@ -209,22 +216,37 @@ GLvoid cbReshape(int width, int height)
 
 GLvoid cbKeyPressed(unsigned char key, int x, int y)
 {
+	keys[key] = true;
+	mouse_pos_x = x, mouse_pos_y = y;
+	if (key == KEY_ESCAPE)
+	{
+		glutDestroyWindow(window);
+		exit(0);
+	}
 }
 
 GLvoid cbKeyUp(unsigned char key, int x, int y)
 {
+	keys[key] = false;
+	mouse_pos_x = x, mouse_pos_y = y;
 }
 
 GLvoid cbSpecialKeyPressed(int key, int x, int y)
 {
+	spkeys[key] = true;
+	mouse_pos_x = x, mouse_pos_y = y;
 }
 
 GLvoid cbSpecialKeyUp(int key, int x, int y)
 {
+	spkeys[key] = false;
+	mouse_pos_x = x, mouse_pos_y = y;
 }
 
 GLvoid cbMouseEvent(int button, int state, int x, int y)
 {
+	mouse_pressed[button] = (state == GLUT_DOWN ? true : false);
+	mouse_pos_x = x, mouse_pos_y = y;
 }
 
 GLvoid cbMouseMotion(int x, int y)
