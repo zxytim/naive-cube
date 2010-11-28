@@ -15,7 +15,7 @@ static unsigned int getshort(FILE *fp)
 	return getc(fp) + (getc(fp) << 8);
 }
 
-int ImageLoad(const char *filename, Image *image)
+bool ImageLoad(const char *filename, Image *image)
 {
 	FILE *file;
 	ul size, planes, bpp;

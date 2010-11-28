@@ -1,3 +1,7 @@
+
+#ifndef __LIBS_CUBE_IMAGE__
+#define __LIBS_CUBE_IMAGE__
+
 #define ul unsigned long
 
 class Image
@@ -8,6 +12,7 @@ class Image
 		char *data;
 };
 
-int ImageLoad(const char *filename, Image *image);
+bool ImageLoad(const char *filename, Image *image);
 
 #undef ul
+#endif // __LIBS_CUBE_IMAGE__
