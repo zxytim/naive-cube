@@ -50,10 +50,6 @@ int window_width				= 800,
 // color
 Color background_color			= Color(0, 0, 0, 0);
 
-// keyboard state
-bool keys[256];				// normal keys
-bool spkeys[256];			// special keys
-
 // mouse state
 bool mouse_pressed[3];		// MOUSE_LEFT_BUTTON, MOUSE_MIDDLE_BUTTON, MOUSE_RIGHT_BUTTON
 int mouse_x, mouse_y;
@@ -77,20 +73,6 @@ GLvoid cbSpecialKeyUp(int key, int x, int y);
 GLvoid cbMouseEvent(int button, int state, int x, int y);
 GLvoid cbMouseMotion(int x, int y);
 GLvoid cbMousePassiveMotion(int x, int y);
-
-// game state callbacks
-void cbGameInit();
-void cbGameMenu();
-void cbGameStarting();
-void cbGameRun();
-void cbGameExit();
-
-// mouse motion callbacks
-void cbMouseMotionGameInit(int x, int y);
-void cbMoueeMotionGameMenu(int x, int y);
-void cbMouseMotionGameStarting(int x, int y);
-void cbMouseMotionGameRun(int x, int y);
-void cbMouseMotionGameExit(int x, int y);
 
 /* ================================================ */
 
@@ -127,12 +109,7 @@ void InitConfig()
 
 void InitGameMananger()
 {
-	static GameStateInit init;
-	static GameStateMenu menu;
-	static GameStateRun run;
-	GM->RegisterGameStateInstance(GAME_STATE_INIT, init);
-	GM->RegisterGameStateInstance(GAME_STATE_MENU, menu);
-	GM->RegisterGameStateInstance(GAME_STATE_RUN, run);
+	GM->RegisterGameStateInstance(GAME_STATE_RUN, GameStateRun::GetInstance());
 	GM->ChangeState(GAME_STATE_RUN);
 }
 

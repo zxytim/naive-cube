@@ -14,14 +14,19 @@ class Point
 	public:
 		GLfloat x, y, z;
 		Point();
-		Point(GLfloat _x, GLfloat _y, GLfloat _z);
+		Point(GLfloat x, GLfloat y, GLfloat z);
+		void set(GLfloat x, GLfloat y, GLfloat z);
 		friend Point operator + (const Point &a, const Point &b);
 		friend Point operator - (const Point &a, const Point &b);
 		friend GLfloat operator * (const Point &a, const Point &b);
-		friend Point operator * (const Point &a, GLfloat b);
-		friend Point operator / (const Point &a, GLfloat b);
+		friend Point operator * (const Point &a, GLfloat factor);
+		friend Point operator / (const Point &a, GLfloat factor);
 		friend bool operator == (const Point &a, const Point &b);
 		friend bool operator != (const Point &a, const Point &b);
+		Point& operator += (const Point &a);
+		Point& operator -= (const Point &a);
+		Point& operator *= (GLfloat factor);
+		Point& operator /= (GLfloat factor);
 		friend Point CrossProduct(const Point &a, const Point &b);
 		GLfloat mo() const;
 		Point unit() const;

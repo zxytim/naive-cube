@@ -1,23 +1,24 @@
-obj/./manager/game_state_menu.o: manager/game_state_menu.cpp \
- manager/game_state_menu.h manager/manager.h manager/game_state_init.h \
- manager/game_state_run.h
 obj/./manager/game_state_run.o: manager/game_state_run.cpp \
- manager/game_state_run.h manager/manager.h manager/game_state_init.h \
- manager/game_state_menu.h
-obj/./manager/game_state_init.o: manager/game_state_init.cpp \
- manager/game_state_init.h manager/manager.h manager/game_state_menu.h \
- manager/game_state_run.h
+ manager/game_state_run.h manager/manager.h manager/../cube.h \
+ manager/../libs/math.h manager/../libs/image.h manager/../libs/time.h \
+ manager/../libs/structure.h manager/../libs/math.h \
+ manager/../libs/color.h manager/../libs/color.h \
+ manager/../libs/exception.h
 obj/./manager/manager.o: manager/manager.cpp manager/manager.h \
- manager/game_state_init.h manager/game_state_menu.h \
- manager/game_state_run.h
+ manager/game_state_run.h manager/../cube.h manager/../libs/math.h \
+ manager/../libs/image.h manager/../libs/time.h \
+ manager/../libs/structure.h manager/../libs/math.h \
+ manager/../libs/color.h manager/../libs/color.h \
+ manager/../libs/exception.h
 obj/./main.o: main.cpp cube.h libs/math.h libs/image.h libs/time.h \
- libs/structure.h libs/math.h libs/color.h libs/exception.h \
- manager/manager.h manager/game_state_init.h manager/manager.h \
- manager/game_state_menu.h manager/game_state_run.h
+ libs/structure.h libs/math.h libs/color.h libs/color.h libs/exception.h \
+ manager/manager.h manager/game_state_run.h manager/manager.h \
+ manager/../cube.h
 obj/./libs/image.o: libs/image.cpp libs/image.h
 obj/./libs/math.o: libs/math.cpp libs/math.h
 obj/./libs/color.o: libs/color.cpp libs/color.h
-obj/./libs/structure.o: libs/structure.cpp libs/structure.h libs/math.h
+obj/./libs/structure.o: libs/structure.cpp libs/structure.h libs/math.h \
+ libs/color.h
 obj/./libs/time.o: libs/time.cpp libs/time.h
 obj/./libs/config.o: libs/config.cpp libs/config.h
 obj/./libs/exception.o: libs/exception.cpp libs/exception.h

@@ -2,11 +2,12 @@ CXXSOURCES = $(shell find . -name '*.cpp')
 OBJDIR = obj
 OBJS = $(patsubst %.cpp, $(OBJDIR)/%.o, $(CXXSOURCES))
 CXX = g++
-CXXFLAGS = -g #-Werror -Wall -Wextra 
+CXXFLAGS = -g #-Wall -Wextra -Werror 
 LIBS = -lGL -lglut -lGLU
+TARGET = cube
 
-cube: $(OBJS)
-	$(CXX) $(OBJS) -o cube $(CXXFLAGS) $(LIBS)
+$(TARGET): $(OBJS)
+	$(CXX) $(OBJS) -o $(TARGET) $(CXXFLAGS) $(LIBS)
 	@echo "Compilation succeed."
 
 Makefile.dep: $(CXXSOURCES)
@@ -22,14 +23,14 @@ obj/%.o: %.cpp
 
 .PHONY: run gdb clean
 
-run: cube
-	./cube
+run: $(TARGET)
+	./$(TARGET)
 
-gdb: cube
-	gdb ./cube
+gdb: $(TARGET)
+	gdb ./$(TARGET)
 
 clean:
-	rm cube -f
+	rm $(TARGET) -f
 	find . -name '*.o' -delete
 
 hg:

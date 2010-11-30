@@ -8,7 +8,9 @@ GameManager* GameManagerInstance()
 
 GameState* GameManager::CurState()
 {
-	return game_state[cur_state];
+	if (cur_state >= 0 && cur_state < N_GAME_STATE)
+		return game_state[cur_state];
+	return NULL;
 }
 
 void GameManager::Init()
@@ -23,8 +25,6 @@ void GameManager::Render()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	glLoadIdentity();
-
 	CurState()->Render();
 	
 	glutSwapBuffers();
@@ -34,7 +34,9 @@ bool GameManager::ChangeState(int state)
 {
 	if (state < 0 || state >= N_GAME_STATE)
 		return false;
-	CurState()->Exit();
+
+	if (CurState())
+		CurState()->Exit();
 
 	cur_state = state;
 
@@ -43,11 +45,11 @@ bool GameManager::ChangeState(int state)
 	return true;
 }
 
-bool GameManager::RegisterGameStateInstance(int state, GameState &game_state_instance)
+bool GameManager::RegisterGameStateInstance(int state, GameState *game_state_instance)
 {
 	if (state < 0 || state >= N_GAME_STATE)
 		return false;
-	game_state[state] = &game_state_instance;
+	game_state[state] = game_state_instance;
 	return true;
 }
 

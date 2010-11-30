@@ -22,6 +22,7 @@
 #define MOUSE_RIGHT_BUTTON						GLUT_RIGHT_BUTTON
 
 /* -------------- Game states -------------- */
+#define GAME_STATE_NULL							-1
 #define GAME_STATE_INIT							0
 #define GAME_STATE_MENU							1
 #define GAME_STATE_STARTING						2
@@ -73,7 +74,7 @@ GameManager* GameManagerInstance();
 class GameManager
 {
 	private:
-		GameManager(){cur_state = GAME_STATE_INIT;}
+		GameManager(){cur_state = GAME_STATE_NULL;}
 		int cur_state;
 		GameState* game_state[N_GAME_STATE];
 	public:
@@ -84,7 +85,7 @@ class GameManager
 		friend GameManager* GameManagerInstance();
 		GameState* CurState();
 		bool ChangeState(int state);
-		bool RegisterGameStateInstance(int state, GameState &game_state_instance);
+		bool RegisterGameStateInstance(int state, GameState *game_state_instance);
 
 		void cbKeyPressed(unsigned char key, int x, int y);
 		void cbKeyUp(unsigned char key, int x, int y);
@@ -95,24 +96,29 @@ class GameManager
 		void cbMousePassiveMotion(int x, int y);
 };
 
-#define DECLARE_GAME_STATE_CLASS(class_name) \
-	class GameState##class_name : public GameState \
-{ \
-	void Init(); \
-	void Idle(); \
-	void Render(); \
-	void Exit(); \
-	void cbMouseEvent(int button, int state, int x, int y); \
-	void cbMousePassiveMotion(int x, int y); \
-	void cbMouseMotion(int x, int y); \
-	void cbKeyPressed(unsigned char key, int x, int y); \
-	void cbKeyUp(unsigned char key, int x, int y); \
-	void cbSpecialKeyPressed(int key, int x, int y); \
-	void cbSpecialKeyUp(int key, int x, int y); \
-};
+#define DECLARE_GAME_STATE_CLASS_DEFAULT_MEMBER_FUNCTION(CLS_NAME) \
+	private: \
+		GameState##CLS_NAME(); \
+	public: \
+		static GameState##CLS_NAME* GetInstance() \
+		{ \
+			static GameState##CLS_NAME game_state; \
+			return &game_state; \
+		} \
+		void Init(); \
+		void Idle(); \
+		void Render(); \
+		void Exit(); \
+		void cbMouseEvent(int button, int state, int x, int y); \
+		void cbMousePassiveMotion(int x, int y); \
+		void cbMouseMotion(int x, int y); \
+		void cbKeyPressed(unsigned char key, int x, int y); \
+		void cbKeyUp(unsigned char key, int x, int y); \
+		void cbSpecialKeyPressed(int key, int x, int y); \
+		void cbSpecialKeyUp(int key, int x, int y); \
 
-#include "game_state_init.h"
-#include "game_state_menu.h"
+//#include "game_state_init.h"
+//#include "game_state_menu.h"
 //#include "game_state_starting"
 #include "game_state_run.h"
 //#include "game_state_exit"

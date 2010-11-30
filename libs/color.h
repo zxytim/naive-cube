@@ -8,7 +8,7 @@ class Color
 	public:
 		int r, g, b, a;
 		Color();
-		Color(int r, int g, int b, int a = 0);
+		Color(int r = 0, int g = 0, int b = 0, int a = 1);
 };
 
 #endif

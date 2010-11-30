@@ -8,6 +8,9 @@
 
 Point::Point(){x = y = z = 0;}
 Point::Point(GLfloat _x, GLfloat _y, GLfloat _z){x = _x, y = _y, z = _z;}
+
+void Point::set(GLfloat _x, GLfloat _y, GLfloat _z){x = _x, y = _y, z = _z;}
+
 Point operator + (const Point &a, const Point &b)
 {
 	return Point(a.x + b.x, a.y + b.y, a.z + b.z);
@@ -88,5 +91,37 @@ GLfloat get_angle(const Point &a, const Point &b)
 void vector_rotate(Point &vec, const Point &axis, GLfloat angle)
 {
 	vec = vec.rotate(axis, angle);
+}
+
+Point& Point::operator += (const Point &a)
+{
+	(*this).x += a.x;
+	(*this).y += a.y;
+	(*this).z += a.z;
+	return *this;
+}
+
+Point& Point::operator -= (const Point &a)
+{
+	(*this).x -= a.x;
+	(*this).y -= a.y;
+	(*this).z -= a.z;
+	return *this;
+}
+
+Point& Point::operator *= (GLfloat factor)
+{
+	(*this).x *= factor;
+	(*this).y *= factor;
+	(*this).z *= factor;
+	return (*this);
+}
+
+Point& Point::operator /= (GLfloat factor)
+{
+	(*this).x /= factor;
+	(*this).y /= factor;
+	(*this).z /= factor;
+	return (*this);
 }
 
