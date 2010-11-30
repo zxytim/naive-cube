@@ -2,7 +2,7 @@
 #ifndef __CUBE_STRUCTURE_H__
 #define __CUBE_STRUCTURE_H__
 
-#include "cube_math.h"
+#include "math.h"
 
 class CubeGrid
 {

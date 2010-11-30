@@ -1,4 +1,4 @@
-#include  "cube_image.h"
+#include  "image.h"
 #include <cstdio>
 #include <cstdlib>
 
@@ -65,7 +65,7 @@ bool ImageLoad(const char *filename, Image *image)
 		return 0;
 	}
 
-	for (int i = 0; i < size; i += 3)
+	for (ul i = 0; i < size; i += 3)
 	{
 		char t = image->data[i];
 		image->data[i] = image->data[i + 2];

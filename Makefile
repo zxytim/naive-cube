@@ -1,25 +1,39 @@
-.PHONY: libs all
+CXXSOURCES = $(shell find . -name '*.cpp')
+OBJDIR = obj
+OBJS = $(patsubst %.cpp, $(OBJDIR)/%.o, $(CXXSOURCES))
+CXX = g++
+CXXFLAGS = -g #-Werror -Wall -Wextra 
+LIBS = -lGL -lglut -lGLU
 
-LIBS = -lGL -lglut -lGLU -g 
-all: cube
+cube: $(OBJS)
+	$(CXX) $(OBJS) -o cube $(CXXFLAGS) $(LIBS)
+	@echo "Compilation succeed."
 
-cube: libs cube.h
-	g++ -o cube main.cpp libs/*.o $(LIBS) -DDEBUG
+Makefile.dep: $(CXXSOURCES)
+	for i in $(CXXSOURCES); do \
+		$(CXX) -MM -MT "$(OBJDIR)/`echo $$i | sed -e 's/cpp\$$/o/g'`" $$i; \
+	done > Makefile.dep
 
-cube.h: const.h
+sinclude Makefile.dep
 
-libs:
-	cd libs && make
+obj/%.o: %.cpp
+	$(CXX) -c $< -o $@ $(CXXFLAGS) $(LIBS)
 
-clean:
-	cd libs && make clean
-	rm -f cube
+
+.PHONY: run gdb clean
 
 run: cube
 	./cube
 
-gdb: libs cube.h
-	g++ -o cube main.cpp libs/*.o $(LIBS) -DDEBUG
+gdb: cube
 	gdb ./cube
 
+clean:
+	rm cube -f
+	find . -name '*.o' -delete
+
+hg:
+	hg addremove
+	hg commit -u zxytim
+	hg push
 

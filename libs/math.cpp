@@ -1,4 +1,4 @@
-#include "cube_math.h"
+#include "math.h"
 
 #include <cmath>
 
@@ -36,7 +36,7 @@ bool operator == (const Point &a, const Point &b)
 
 bool operator != (const Point &a, const Point &b)
 {
-	return fabs(a.x - b.x) >= EPS || fabs(a.y - b.y) >= EPS && fabs(a.z - b.z) >= EPS;
+	return fabs(a.x - b.x) >= EPS || fabs(a.y - b.y) >= EPS || fabs(a.z - b.z) >= EPS;
 }
 
 Point CrossProduct(const Point &a, const Point &b)

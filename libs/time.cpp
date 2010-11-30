@@ -5,7 +5,7 @@
 #include <windows.h>
 #endif
 
-#include "cube_time.h"
+#include "time.h"
 
 #define TIME_UNIT_MAX (TIME_UNIT_US + 1)
 

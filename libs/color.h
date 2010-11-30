@@ -1,4 +1,5 @@
 
+/* color definations */
 #ifndef __CUBE_COLOR_H__
 #define __CUBE_COLOR_H__
 

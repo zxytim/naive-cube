@@ -8,18 +8,23 @@
 #include <cmath>
 
 #include "cube.h"
+#include "manager/manager.h"
 
 #define GAME_NAME "Naive Cube"
 
 /* --------- Structures --------- */
 typedef void (*GameStateCallback)();
+typedef void (*MouseMotionCallback)(int, int);
+typedef void (*KeyPressedCallback)(unsigned char, int, int);
 
 /* ---------- Consts ------------ */
 const Vector x_axis(1, 0, 0),
 	  y_axis(0, 1, 0),
-	  z_axis(0, 0, 1);
+	  z_axis(0, 0, -1);
 
 /* --------- Variables ---------- */
+// Game manager
+GameManager *GM = GameManagerInstance();
 // settings
 GLfloat mouse_sensitivity = 0.12;
 
@@ -28,12 +33,13 @@ int game_state					= GAME_STATE_RUN,
 	FPS							= 60;
 
 // cube and observer
+GLfloat observer_sight_len = 100.0;
 Vector cube_pos					= Point(0, 0, -6),
 	   cube_front_dir			= z_axis,
 	   cube_up_dir				= y_axis,
 
 	   observer_pos				= Point(0, 0, 0),
-	   observer_front_dir		= z_axis,
+	   observer_front_dir		= z_axis * observer_sight_len,
 	   observer_up_dir			= y_axis;
 
 // window
@@ -50,13 +56,14 @@ bool spkeys[256];			// special keys
 
 // mouse state
 bool mouse_pressed[3];		// MOUSE_LEFT_BUTTON, MOUSE_MIDDLE_BUTTON, MOUSE_RIGHT_BUTTON
-int mouse_pos_x, mouse_pos_y;
+int mouse_x, mouse_y;
 
 
 /* -------- Function declarations ---------- */
 void doCubeRotate(GLfloat x, GLfloat y);
-void InitGL(int argc, char *argv[]);
 void InitConfig();
+void InitGameMananger();
+void InitGL(int argc, char *argv[]);
 
 // callbacks
 // OpenGL callbacks
@@ -78,9 +85,21 @@ void cbGameStarting();
 void cbGameRun();
 void cbGameExit();
 
+// mouse motion callbacks
+void cbMouseMotionGameInit(int x, int y);
+void cbMoueeMotionGameMenu(int x, int y);
+void cbMouseMotionGameStarting(int x, int y);
+void cbMouseMotionGameRun(int x, int y);
+void cbMouseMotionGameExit(int x, int y);
+
+/* ================================================ */
 
 int main(int argc, char *argv[])
 {
+	InitConfig();
+
+	InitGameMananger();
+
 	InitGL(argc, argv);
 
 	glutMainLoop();
@@ -102,10 +121,24 @@ void doCubeRotate(GLfloat x, GLfloat y)
 #endif
 }
 
+void InitConfig()
+{
+}
+
+void InitGameMananger()
+{
+	static GameStateInit init;
+	static GameStateMenu menu;
+	static GameStateRun run;
+	GM->RegisterGameStateInstance(GAME_STATE_INIT, init);
+	GM->RegisterGameStateInstance(GAME_STATE_MENU, menu);
+	GM->RegisterGameStateInstance(GAME_STATE_RUN, run);
+	GM->ChangeState(GAME_STATE_RUN);
+}
+
+
 void InitGL(int argc, char *argv[])
 {
-	InitConfig();
-
 	/* window settings */
 	glutInit(&argc, argv);
 
@@ -162,25 +195,11 @@ void InitGL(int argc, char *argv[])
 	gluPerspective(45.0, (GLfloat)window_width / (GLfloat)window_height, 0.1, 100.0);
 }
 
-void InitConfig()
-{
-}
 
 
 GLvoid cbDrawScene()
 {
-	static GameStateCallback cb_game_state[] =
-	{
-		cbGameInit,
-		cbGameMenu,
-		cbGameStarting,
-		cbGameRun,
-		cbGameExit
-	};
-
-	cb_game_state[game_state]();
-
-	glutSwapBuffers();
+	GM->Render();
 
 	return;
 }
@@ -198,10 +217,11 @@ GLvoid cbIdle()
 	timeStart();
 }
 
+
 GLvoid cbReshape(int width, int height)
 {
 	if (height == 0)
-		height == 1;
+		height = 1;
 
 	glViewport(0, 0, width, height);
 
@@ -216,79 +236,44 @@ GLvoid cbReshape(int width, int height)
 
 GLvoid cbKeyPressed(unsigned char key, int x, int y)
 {
-	keys[key] = true;
-	mouse_pos_x = x, mouse_pos_y = y;
+	mouse_x = x, mouse_y = y;
+	GM->cbKeyPressed(key, x, y);
+	/*
 	if (key == KEY_ESCAPE)
 	{
 		glutDestroyWindow(window);
 		exit(0);
 	}
+	*/
 }
 
 GLvoid cbKeyUp(unsigned char key, int x, int y)
 {
-	keys[key] = false;
-	mouse_pos_x = x, mouse_pos_y = y;
+	GM->cbKeyUp(key, x, y);
 }
 
 GLvoid cbSpecialKeyPressed(int key, int x, int y)
 {
-	spkeys[key] = true;
-	mouse_pos_x = x, mouse_pos_y = y;
+	GM->cbSpecialKeyPressed(key, x, y);
 }
 
 GLvoid cbSpecialKeyUp(int key, int x, int y)
 {
-	spkeys[key] = false;
-	mouse_pos_x = x, mouse_pos_y = y;
+	GM->cbSpecialKeyUp(key, x, y);
 }
 
 GLvoid cbMouseEvent(int button, int state, int x, int y)
 {
-	mouse_pressed[button] = (state == GLUT_DOWN ? true : false);
-	mouse_pos_x = x, mouse_pos_y = y;
+	GM->cbMouseEvent(button, state, x, y);
 }
 
 GLvoid cbMouseMotion(int x, int y)
 {
+	GM->cbMouseMotion(x, y);
 }
 
 GLvoid cbMousePassiveMotion(int x, int y)
 {
+	GM->cbMousePassiveMotion(x, y);
 }
-
-
-void cbGameInit()
-{
-}
-
-void cbGameMenu()
-{
-}
-
-void cbGameStarting()
-{
-}
-
-void cbGameRun()
-{
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	glLoadIdentity();
-
-	glTranslatef(0, 0, -6);	
-
-	glBegin(GL_LINES);
-
-	glColor3f(1, 1, 1);
-	glVertex3f(0, 0, 0);
-	glVertex3f(1, 1, 1);
-
-	glEnd();
-}
-
-void cbGameExit()
-{
-}
-
 
