@@ -1,3 +1,28 @@
+/*
+ * $File: main.cpp
+ * $Date: Wed Dec 01 10:54:27 2010 +0800
+ * $Author: Zhou Xinyu <zxytim@gmail.com>
+ */
+/*
+   This file is part of naive-cube
+
+   Copyright (C) <2010>  Zhou Xinyu <zxytim@gmail.com>
+
+   naive-cube is free software: you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation, either version 3 of the License, or
+   (at your option) any later version.
+
+   naive-cube is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with JKOS.  If not, see <http://www.gnu.org/licenses/>.
+
+*/
+
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <GL/glut.h>
@@ -89,19 +114,7 @@ int main(int argc, char *argv[])
 	return 0;
 }
 
-void doCubeRotate(GLfloat x, GLfloat y)
-{
-	vector_rotate(cube_front_dir, y_axis, x);
-	vector_rotate(cube_up_dir, y_axis, x);
 
-	vector_rotate(cube_front_dir, x_axis, y);
-	vector_rotate(cube_up_dir, x_axis, y);
-#ifdef DEBUG
-	printf("cube front dir: (%.3lf,%.3lf,%.3lf)\n", cube_front_dir.x, cube_front_dir.y, cube_front_dir.z);
-	printf("cube up dir: (%.3lf,%.3lf,%.3lf)\n", cube_up_dir.x, cube_up_dir.y, cube_up_dir.z);
-	printf("angle between front and up dir: %.3lf deg\n", get_angle(cube_front_dir, cube_up_dir));
-#endif
-}
 
 void InitConfig()
 {
@@ -158,7 +171,7 @@ void InitGL(int argc, char *argv[])
 	glClearColor(background_color.r, background_color.g, background_color.g, background_color.a);
 
 	glDepthFunc(GL_LESS);
-	
+
 	glEnable(GL_DEPTH_TEST);
 
 	//glBlendFunc(GL_SRC_ALPHA, GL_ONE);
@@ -189,7 +202,7 @@ GLvoid cbIdle()
 		return;
 	}
 
-	cbDrawScene();
+	GM->Idle();
 
 	timeStart();
 }
@@ -216,12 +229,12 @@ GLvoid cbKeyPressed(unsigned char key, int x, int y)
 	mouse_x = x, mouse_y = y;
 	GM->cbKeyPressed(key, x, y);
 	/*
-	if (key == KEY_ESCAPE)
-	{
-		glutDestroyWindow(window);
-		exit(0);
-	}
-	*/
+	   if (key == KEY_ESCAPE)
+	   {
+	   glutDestroyWindow(window);
+	   exit(0);
+	   }
+	   */
 }
 
 GLvoid cbKeyUp(unsigned char key, int x, int y)

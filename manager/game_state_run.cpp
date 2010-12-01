@@ -1,3 +1,28 @@
+/*
+ * $File: game_state_run.cpp
+ * $Date: Wed Dec 01 10:54:03 2010 +0800
+ * $Author: Zhou Xinyu <zxytim@gmail.com>
+ */
+/*
+   This file is part of naive-cube
+
+   Copyright (C) <2010>  Zhou Xinyu <zxytim@gmail.com>
+
+   naive-cube is free software: you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation, either version 3 of the License, or
+   (at your option) any later version.
+
+   naive-cube is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with JKOS.  If not, see <http://www.gnu.org/licenses/>.
+
+*/
+
 #include "game_state_run.h"
 
 GameStateRun::GameStateRun()
@@ -5,17 +30,22 @@ GameStateRun::GameStateRun()
 	eye_pos.set(0, 0, 0);
 	normal_dir.set(0, 1, 0);
 	cube_center.set(0, 0, -6);
+	x_axis.set(1, 0, 0);
+	y_axis.set(0, 1, 0);
+	z_axis.set(0, 0, 1);
+	cube_front_dir.set(0, 0, -1);
+	cube_up_dir.set(0, 1, 0);
 }
 
-void GameStateRun::Init()
+int GameStateRun::Init()
 {
 }
  
-void GameStateRun::Idle()
+int GameStateRun::Idle()
 {
 }
  
-void GameStateRun::Render()
+int GameStateRun::Render()
 {
 	glLoadIdentity();
 	gluLookAt(eye_pos.x, eye_pos.y, eye_pos.z,
@@ -30,20 +60,26 @@ void GameStateRun::Render()
 	DrawCube();
 }
  
-void GameStateRun::Exit()
+int GameStateRun::Exit()
 {
 }
 
 void GameStateRun::cbMouseEvent(int button, int state, int x, int y)
 {
+	mouse_button[button] = (state == MOUSE_DOWN ? true : false);
+	mouse_x = x, mouse_y = y;
 }
  
 void GameStateRun::cbMousePassiveMotion(int x, int y)
 {
+	mouse_x = x, mouse_y = y;
 }
  
 void GameStateRun::cbMouseMotion(int x, int y)
 {
+	if (mouse_button[MOUSE_LEFT_BUTTON])
+		doCubeRotate(x - mouse_x, y - mouse_y);
+	mouse_x = x, mouse_y = y;
 }
  
 void GameStateRun::cbKeyPressed(unsigned char key, int x, int y)
@@ -60,10 +96,12 @@ void GameStateRun::cbKeyUp(unsigned char key, int x, int y)
  
 void GameStateRun::cbSpecialKeyPressed(int key, int x, int y)
 {
+	mouse_x = x, mouse_y = y;
 }
  
 void GameStateRun::cbSpecialKeyUp(int key, int x, int y)
 {
+	mouse_x = x, mouse_y = y;
 }
  
 void GameStateRun::DrawCube(GLfloat len, const Point &center, const Color *colors)
@@ -139,4 +177,18 @@ void GameStateRun::DrawCube(GLfloat len, const Point &center, const Color *color
 
 		   glEnd();
 		   */
+}
+
+void GameStateRun::doCubeRotate(GLfloat x, GLfloat y)
+{
+	vector_rotate(cube_front_dir, y_axis, x);
+	vector_rotate(cube_up_dir, y_axis, x);
+
+	vector_rotate(cube_front_dir, x_axis, y);
+	vector_rotate(cube_up_dir, x_axis, y);
+#ifdef DEBUG
+	printf("cube front dir: (%.3lf,%.3lf,%.3lf)\n", cube_front_dir.x, cube_front_dir.y, cube_front_dir.z);
+	printf("cube up dir: (%.3lf,%.3lf,%.3lf)\n", cube_up_dir.x, cube_up_dir.y, cube_up_dir.z);
+	printf("angle between front and up dir: %.3lf deg\n", get_angle(cube_front_dir, cube_up_dir));
+#endif
 }

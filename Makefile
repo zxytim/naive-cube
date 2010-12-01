@@ -34,6 +34,7 @@ clean:
 	find . -name '*.o' -delete
 
 hg:
+	make clean
 	hg addremove
 	hg commit -u zxytim
 	hg push

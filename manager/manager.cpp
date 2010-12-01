@@ -1,3 +1,27 @@
+/*
+ * $File: manager.cpp
+ * $Date: Wed Dec 01 10:53:10 2010 +0800
+ * $Author: Zhou Xinyu <zxytim@gmail.com>
+ */
+/*
+   This file is part of naive-cube
+
+   Copyright (C) <2010>  Zhou Xinyu <zxytim@gmail.com>
+
+   naive-cube is free software: you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation, either version 3 of the License, or
+   (at your option) any later version.
+
+   naive-cube is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with JKOS.  If not, see <http://www.gnu.org/licenses/>.
+
+*/
 #include "manager.h"
 
 GameManager* GameManagerInstance()
@@ -19,6 +43,7 @@ void GameManager::Init()
 
 void GameManager::Idle()
 {
+	Render();
 }
 
 void GameManager::Render()
@@ -30,6 +55,10 @@ void GameManager::Render()
 	glutSwapBuffers();
 }
 
+void GameManager::Exit()
+{
+}
+
 bool GameManager::ChangeState(int state)
 {
 	if (state < 0 || state >= N_GAME_STATE)
@@ -37,10 +66,6 @@ bool GameManager::ChangeState(int state)
 
 	if (CurState())
 		CurState()->Exit();
-
-	cur_state = state;
-
-	CurState()->Init();
 
 	return true;
 }
@@ -87,5 +112,4 @@ void GameManager::cbMousePassiveMotion(int x, int y)
 {
 	CurState()->cbMousePassiveMotion(x, y);
 }
-
 
