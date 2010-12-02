@@ -1,6 +1,6 @@
 /*
  * $File: game_state_run.cpp
- * $Date: Thu Dec 02 11:53:27 2010 +0800
+ * $Date: Thu Dec 02 20:02:52 2010 +0800
  * $Author: Zhou Xinyu <zxytim@gmail.com>
  */
 /*
@@ -19,14 +19,13 @@
    GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License
-   along with JKOS.  If not, see <http://www.gnu.org/licenses/>.
+   along with naive-cube.  If not, see <http://www.gnu.org/licenses/>.
 
 */
 
 #include "game_state_run.h"
 
 #ifdef DEBUG
-#include <cstdio>
 #define DEBUG_POINT(p) printf(#p ": (%.3lf,%.3lf,%.3lf)\n", (p).x, (p).y, (p).z);
 #endif
 
@@ -99,6 +98,7 @@ void GameStateRun::MoveEyePos(const Vector &dir)
 
 int GameStateRun::Render()
 {
+	glClearColor(0.5, 0.5, 0.5, 0.5);
 	glLoadIdentity();
 	Point eye_sight_pos = eye_pos + (cube_center - eye_pos).resize((cube_center - eye_pos).mo() * 1.5);
 	gluLookAt(eye_pos.x, eye_pos.y, eye_pos.z,
@@ -212,18 +212,26 @@ void GameStateRun::DrawMagicCube()
 		for (int j = 0; j < 3; j ++)
 			for (int k = 0; k < 3; k ++)
 			{
+				if (!(i == 1 && j == 1 && k == 1))
 				glLoadName(i * 9 + j * 3 + k);
-				DrawCube(1, Point((i - 1)* 1.02, (j - 1) * 1.02, (k - 1) * 1.02));
+				DrawCube(1, Point(i - 1, j - 1, k - 1));
 			}
 }
 
-void GameStateRun::DrawCube(GLfloat len, const Point &center, const Color *colors)
+void GameStateRun::DrawQuad(const Point a, const Point b, const Point c, const Point d)
 {
-	len *= 0.5;
-	glPushMatrix();
-	static Color default_colors[] = {
-		Color(1, 0, 0), Color(0, 1, 0), Color(0, 0, 1),
-		Color(1, 1, 0), Color(1, 0, 1), Color(0, 1, 1)
+#define DRAW(a) glVertex3f(a.x, a.y, a.z)
+	DRAW(a); DRAW(b); DRAW(c); DRAW(d);
+#undef DRAW
+}
+
+void GameStateRun::DrawCube(GLfloat len, const Point &center, const Colorf *colors, GLfloat padding, const Colorf &padding_color)
+{
+	GLfloat half_len = len * 0.5;
+	AdjustRange(padding, 0.0f, half_len);
+	static Colorf default_colors[6] = {
+		Colorf(1, 0, 0), Colorf(0, 1, 0), Colorf(0, 0, 1),
+		Colorf(1, 1, 0), Colorf(1, 0, 1), Colorf(0, 1, 1)
 	};
 	if (colors == NULL)
 		colors = default_colors;
@@ -242,15 +250,46 @@ void GameStateRun::DrawCube(GLfloat len, const Point &center, const Color *color
 		// left
 		Quad(Point(-1, 0, 0), Point(-1, -1, -1), Point(-1, -1, 1), Point(-1, 1, 1), Point(-1, 1, -1))
 	};
+
+	glPushMatrix();
+
 	glTranslatef(center.x, center.y, center.z);
 	for (int i = 0; i < 6; i ++)
 	{
 		glBegin(GL_QUADS);
 		Quad &quad = quads[i];
-		glColor4f(colors[i].r, colors[i].g, colors[i].b, colors[i].a);
+		Point *vtx = quad.vtx;
 		glNormal3f(quad.normal.x, quad.normal.y, quad.normal.z);
+		bool same_x = true, same_y = true, same_z = true;
+		for (int j = 1; j < 4; j ++)
+		{
+			same_x &= vtx[j].x == vtx[j - 1].x;
+			same_y &= vtx[j].y == vtx[j - 1].y;
+			same_z &= vtx[j].z == vtx[j - 1].z;
+		}
+		// draw padding
+		glColor4f(padding_color.r, padding_color.g, padding_color.b, padding_color.a);
+		Vector dir03 = (vtx[3] - vtx[0]).unit(), dir01 = (vtx[1] - vtx[0]).unit();
+		Point O = vtx[0] + (vtx[2] - vtx[0]) * 0.5;
+#define TRANS(p) (p * len * 0.5)
+		Point v0 = TRANS(vtx[0]), v1 = TRANS(vtx[1]),
+			  v2 = TRANS(vtx[2]), v3 = TRANS(vtx[3]);
+#undef TRANS
+		DrawQuad(v0, v1, v1 + dir03 * padding, v0 + dir03 * padding);
+		DrawQuad(v2, v3, v3 - dir03 * padding, v2 - dir03 * padding);
+		DrawQuad(v0 + dir03 * padding, v3 - dir03 * padding,
+				v3 - (dir03 - dir01) * padding, v0 + (dir03 + dir01) * padding);
+				
+		DrawQuad(v1 + dir03 * padding, v2 - dir03 * padding,
+				v2 - (dir03 + dir01) * padding, v1 + (dir03 - dir01) * padding);
+		// draw center
+		glColor4f(colors[i].r, colors[i].g, colors[i].b, colors[i].a);
 		for (int j = 0; j < 4; j ++)
-			glVertex3f(quad.vtx[j].x * len, quad.vtx[j].y * len, quad.vtx[j].z * len);
+		{
+			glVertex3f(vtx[j].x * (half_len - (!same_x) * padding), 
+					vtx[j].y * (half_len - (!same_y) * padding), 
+					vtx[j].z * (half_len - (!same_z) * padding));
+		}
 		glEnd();
 	}
 	glPopMatrix();

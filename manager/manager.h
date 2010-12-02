@@ -1,6 +1,6 @@
 /*
  * $File: manager.h
- * $Date: Wed Dec 01 11:27:34 2010 +0800
+ * $Date: Thu Dec 02 14:51:03 2010 +0800
  * $Author: Zhou Xinyu <zxytim@gmail.com>
  */
 /*
@@ -19,7 +19,7 @@
    GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License
-   along with JKOS.  If not, see <http://www.gnu.org/licenses/>.
+   along with naive-cube.  If not, see <http://www.gnu.org/licenses/>.
 
 */
 

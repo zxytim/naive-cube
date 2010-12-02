@@ -1,6 +1,6 @@
 /*
  * $File: structure.cpp
- * $Date: Wed Dec 01 10:56:43 2010 +0800
+ * $Date: Thu Dec 02 14:11:09 2010 +0800
  * $Author: Zhou Xinyu <zxytim@gmail.com>
  */
 /*
@@ -19,18 +19,10 @@
    GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License
-   along with JKOS.  If not, see <http://www.gnu.org/licenses/>.
+   along with naive-cube.  If not, see <http://www.gnu.org/licenses/>.
 
 */
 #include "structure.h"
-
-bool Cube::is_completed()
-{
-}
-
-void Cube::rotate(int x, int y, int z, int axis)
-{
-}
 
 Quad::Quad(const Point &normalv, const Point &v0, const Point &v1, const Point &v2, const Point &v3)
 {

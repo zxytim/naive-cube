@@ -1,6 +1,6 @@
 /*
  * $File: game_state_run.h
- * $Date: Thu Dec 02 11:25:43 2010 +0800
+ * $Date: Thu Dec 02 20:03:14 2010 +0800
  * $Author: Zhou Xinyu <zxytim@gmail.com>
  */
 /*
@@ -19,7 +19,7 @@
    GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License
-   along with JKOS.  If not, see <http://www.gnu.org/licenses/>.
+   along with naive-cube.  If not, see <http://www.gnu.org/licenses/>.
 
 */
 
@@ -33,7 +33,8 @@ class GameStateRun : public GameState
 {
 	private:
 		DECLARE_GAME_STATE_CLASS_DEFAULT_MEMBER_FUNCTION(Run);
-		void DrawCube(GLfloat len = 1, const Point &center = Point(0, 0, 0), const Color *colors = NULL);
+		void DrawCube(GLfloat len = 1, const Point &center = Point(0, 0, 0), const Colorf *colors = NULL, GLfloat padding = 0.04, const Colorf &padding_color = Colorf(0, 0, 0));
+		void DrawQuad(const Point a, const Point b, const Point c, const Point d);
 		void DrawMagicCube();
 		void doCubeRotate(GLfloat x, GLfloat y);
 		Point eye_pos,

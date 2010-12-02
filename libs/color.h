@@ -1,6 +1,6 @@
 /*
  * $File: color.h
- * $Date: Wed Dec 01 10:56:02 2010 +0800
+ * $Date: Thu Dec 02 18:09:23 2010 +0800
  * $Author: Zhou Xinyu <zxytim@gmail.com>
  */
 /*
@@ -19,19 +19,21 @@
    GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License
-   along with JKOS.  If not, see <http://www.gnu.org/licenses/>.
+   along with naive-cube.  If not, see <http://www.gnu.org/licenses/>.
 
 */
 /* color definations */
 #ifndef __CUBE_COLOR_H__
 #define __CUBE_COLOR_H__
 
-class Color
+#include <GL/gl.h>
+
+class Colorf
 {
 	public:
-		int r, g, b, a;
-		Color();
-		Color(int r = 0, int g = 0, int b = 0, int a = 1);
+		GLfloat r, g, b, a;
+		Colorf();
+		Colorf(GLfloat r = 0, GLfloat g = 0, GLfloat b = 0, GLfloat a = 1);
 };
 
 #endif

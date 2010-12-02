@@ -1,6 +1,6 @@
 /*
- * $File: config.cpp
- * $Date: Wed Dec 01 10:56:07 2010 +0800
+ * $File: common.cpp
+ * $Date: Thu Dec 02 19:07:55 2010 +0800
  * $Author: Zhou Xinyu <zxytim@gmail.com>
  */
 /*
@@ -22,4 +22,7 @@
    along with naive-cube.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-#include "config.h"
+
+#include "common.h"
+
+

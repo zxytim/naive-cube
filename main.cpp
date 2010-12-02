@@ -1,6 +1,6 @@
 /*
  * $File: main.cpp
- * $Date: Wed Dec 01 11:27:37 2010 +0800
+ * $Date: Thu Dec 02 17:23:03 2010 +0800
  * $Author: Zhou Xinyu <zxytim@gmail.com>
  */
 /*
@@ -19,7 +19,7 @@
    GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License
-   along with JKOS.  If not, see <http://www.gnu.org/licenses/>.
+   along with naive-cube.  If not, see <http://www.gnu.org/licenses/>.
 
 */
 
@@ -68,11 +68,10 @@ int window_width				= 800,
 	window;
 
 // color
-Color background_color			= Color(0, 0, 0, 0);
+Colorf background_color			= Colorf(0, 0, 0, 0);
 
 // mouse state
 bool mouse_pressed[3];		// MOUSE_LEFT_BUTTON, MOUSE_MIDDLE_BUTTON, MOUSE_RIGHT_BUTTON
-int mouse_x, mouse_y;
 
 
 /* -------- Function declarations ---------- */
@@ -221,7 +220,6 @@ GLvoid cbReshape(int width, int height)
 
 GLvoid cbKeyPressed(unsigned char key, int x, int y)
 {
-	mouse_x = x, mouse_y = y;
 	GM->cbKeyPressed(key, x, y);
 	/*
 	   if (key == KEY_ESCAPE)

@@ -1,6 +1,6 @@
 /*
  * $File: cube.h
- * $Date: Wed Dec 01 10:54:24 2010 +0800
+ * $Date: Thu Dec 02 19:20:19 2010 +0800
  * $Author: Zhou Xinyu <zxytim@gmail.com>
  */
 /*
@@ -19,11 +19,11 @@
    GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License
-   along with JKOS.  If not, see <http://www.gnu.org/licenses/>.
+   along with naive-cube.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-#ifndef __LIBS_CUBE_H__
-#define __LIBS_CUBE_H__
+#ifndef __CUBE_H__
+#define __CUBE_H__
 
 #include "libs/math.h"
 #include "libs/image.h"
@@ -31,5 +31,12 @@
 #include "libs/structure.h"
 #include "libs/color.h"
 #include "libs/exception.h"
+#include "libs/xb_cube.h"
+#include "libs/common.h"
 
-#endif // __LIBS_CUBE_H__
+#ifdef DEBUG
+#include <cstdio>
+#include <cassert>
+#endif
+
+#endif // __CUBE_H__

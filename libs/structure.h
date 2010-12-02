@@ -1,6 +1,6 @@
 /*
  * $File: structure.h
- * $Date: Wed Dec 01 10:56:46 2010 +0800
+ * $Date: Thu Dec 02 20:43:19 2010 +0800
  * $Author: Zhou Xinyu <zxytim@gmail.com>
  */
 /*
@@ -19,7 +19,7 @@
    GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License
-   along with JKOS.  If not, see <http://www.gnu.org/licenses/>.
+   along with naive-cube.  If not, see <http://www.gnu.org/licenses/>.
 
 */
 #ifndef __CUBE_STRUCTURE_H__
@@ -27,20 +27,7 @@
 
 #include "math.h"
 #include "color.h"
-
-class CubeGrid
-{
-	public:
-		Color color[6];
-};
-
-class Cube
-{
-	public:
-		CubeGrid grid[3][3][3];
-		bool is_completed();
-		void rotate(int x, int y, int z, int axis);
-};
+#include <GL/gl.h>
 
 class Quad
 {
@@ -51,5 +38,20 @@ class Quad
 		Quad(const Point &normal, const Point &v0, const Point &v1, const Point &v2, const Point &v3);
 		// TODO
 		//bool bind_texture;
+};
+
+class CubeGrid
+{
+	public:
+		// front back top bottom right left
+		Colorf color[6];
+		bool visible[6];
+};
+
+class Cube
+{
+	public:
+		GLfloat cube_grid_len;
+		CubeGrid grid[3][3][3];
 };
 #endif

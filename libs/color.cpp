@@ -1,6 +1,6 @@
 /*
  * $File: color.cpp
- * $Date: Wed Dec 01 10:55:55 2010 +0800
+ * $Date: Thu Dec 02 18:09:54 2010 +0800
  * $Author: Zhou Xinyu <zxytim@gmail.com>
  */
 /*
@@ -19,15 +19,15 @@
    GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License
-   along with JKOS.  If not, see <http://www.gnu.org/licenses/>.
+   along with naive-cube.  If not, see <http://www.gnu.org/licenses/>.
 
 */
 
 #include "color.h"
 
-Color::Color(){}
+Colorf::Colorf(){}
 
-Color::Color(int _r, int _g, int _b, int _a)
+Colorf::Colorf(GLfloat _r, GLfloat _g, GLfloat _b, GLfloat _a)
 {
 	r = _r, g = _g, b = _b, a = _a;
 }
