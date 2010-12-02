@@ -2,7 +2,7 @@ CXXSOURCES = $(shell find . -name '*.cpp')
 OBJDIR = obj
 OBJS = $(patsubst %.cpp, $(OBJDIR)/%.o, $(CXXSOURCES))
 CXX = g++
-CXXFLAGS = -g #-Wall -Wextra -Werror 
+CXXFLAGS = -DDEBUG -g #-Wall -Wextra -Werror 
 LIBS = -lGL -lglut -lGLU
 TARGET = cube
 

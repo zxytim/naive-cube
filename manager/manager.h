@@ -1,6 +1,6 @@
 /*
  * $File: manager.h
- * $Date: Wed Dec 01 10:53:24 2010 +0800
+ * $Date: Wed Dec 01 11:27:34 2010 +0800
  * $Author: Zhou Xinyu <zxytim@gmail.com>
  */
 /*
@@ -48,40 +48,52 @@
 #define MOUSE_UP								GLUT_UP
 
 /* -------------- Game states -------------- */
-#define GAME_STATE_NULL							-1
+#define GAME_STATE_NONE							-1
 #define GAME_STATE_INIT							0
 #define GAME_STATE_MENU							1
 #define GAME_STATE_STARTING						2
 #define GAME_STATE_RUN							3
 #define GAME_STATE_EXIT							4
 
+#define N_GAME_STATE							(GAME_STATE_EXIT + 1)
+
 /* ----------- Game state progress --------- */
+#define GAME_STATE_PROGRESS_NONE				-1
 #define GAME_STATE_PROGRESS_LOADING				0
 #define GAME_STATE_PROGRESS_RUNNING				1
 #define GAME_STATE_PROGRESS_EXITING				2
 
-#define N_GAME_STATE							(GAME_STATE_EXIT + 1)
 
 class GameState
 {
 	public:
 		/*
 		 * call when game state changed to a specific one
+		 * the progress turned to be GAME_STATE_PROGRESS_LOADING
+		 * the loading animation should be rendered here
+		 * the game manager will hold calling this function until 
+		 *		its return value is 1
 		 */
 		virtual int Init() = 0;
 
 		/*
-		 * call when program is idle
+		 * call when program is idle, the logic parts can be 
+		 *		calculated here
 		 */
 		virtual int Idle() = 0;
 
 		/*
-		 * call when time to render
+		 * call when time to render, when progress of the gamestate
+		 *		is GAME_STATE_PROGRESS_RUNNING
 		 */
 		virtual int Render() = 0;
 
 		/*
 		 * call when about to exit
+		 * the progress turned to be GAME_STATE_PROGRESS_EXITING
+		 * the exit animation should be rendered here
+		 * the game manager will hold calling this function until 
+		 *		its return value is 1
 		 */
 		virtual int Exit() = 0;
 
@@ -108,12 +120,26 @@ class GameManager
 		/*
 		 * construct function
 		 */
-		GameManager(){cur_state = GAME_STATE_NULL;}
+		GameManager()
+		{
+			cur_state = GAME_STATE_NONE;
+		   	progress = GAME_STATE_PROGRESS_NONE;
+		}
 
 		/*
 		 * id of current state
 		 */
 		int cur_state;
+
+		/*
+		 * current progress of the state
+		 */
+		int progress;
+
+		/*
+		 * the next state stored while current state is exiting
+		 */
+		int next_state;
 
 		/*
 		 * the list of game states
@@ -147,7 +173,8 @@ class GameManager
 		friend GameManager* GameManagerInstance();
 
 		/*
-		 * return the instance of current game state
+		 * return the instance of current game state,
+		 * if game state is GAME_STATE_NONE, NULl will be returned
 		 */
 		GameState* CurState();
 

@@ -1,6 +1,6 @@
 /*
  * $File: math.h
- * $Date: Wed Dec 01 10:56:39 2010 +0800
+ * $Date: Wed Dec 01 11:50:55 2010 +0800
  * $Author: Zhou Xinyu <zxytim@gmail.com>
  */
 /*

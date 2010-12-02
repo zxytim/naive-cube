@@ -1,6 +1,6 @@
 /*
  * $File: manager.cpp
- * $Date: Wed Dec 01 10:53:10 2010 +0800
+ * $Date: Wed Dec 01 11:24:57 2010 +0800
  * $Author: Zhou Xinyu <zxytim@gmail.com>
  */
 /*
@@ -50,8 +50,23 @@ void GameManager::Render()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	CurState()->Render();
-	
+	switch (progress)
+	{
+		case GAME_STATE_PROGRESS_LOADING:
+			if (CurState()->Init())
+				progress = GAME_STATE_PROGRESS_RUNNING;
+			break;
+		case GAME_STATE_PROGRESS_RUNNING:
+			CurState()->Render();
+			break;
+		case GAME_STATE_PROGRESS_EXITING:
+			if (CurState()->Exit())
+			{
+				progress = GAME_STATE_PROGRESS_LOADING;
+				cur_state = next_state;
+			}
+			break;
+	}
 	glutSwapBuffers();
 }
 
@@ -65,8 +80,15 @@ bool GameManager::ChangeState(int state)
 		return false;
 
 	if (CurState())
-		CurState()->Exit();
-
+	{
+		progress = GAME_STATE_PROGRESS_EXITING;
+		next_state = state;
+	}
+	else
+	{
+		progress = GAME_STATE_PROGRESS_LOADING;
+		cur_state = state;
+	}
 	return true;
 }
 

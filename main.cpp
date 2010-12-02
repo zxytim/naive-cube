@@ -1,6 +1,6 @@
 /*
  * $File: main.cpp
- * $Date: Wed Dec 01 10:54:27 2010 +0800
+ * $Date: Wed Dec 01 11:27:37 2010 +0800
  * $Author: Zhou Xinyu <zxytim@gmail.com>
  */
 /*
@@ -36,11 +36,6 @@
 #include "manager/manager.h"
 
 #define GAME_NAME "Naive Cube"
-
-/* --------- Structures --------- */
-typedef void (*GameStateCallback)();
-typedef void (*MouseMotionCallback)(int, int);
-typedef void (*KeyPressedCallback)(unsigned char, int, int);
 
 /* ---------- Consts ------------ */
 const Vector x_axis(1, 0, 0),
@@ -83,7 +78,7 @@ int mouse_x, mouse_y;
 /* -------- Function declarations ---------- */
 void doCubeRotate(GLfloat x, GLfloat y);
 void InitConfig();
-void InitGameMananger();
+void InitGameManager();
 void InitGL(int argc, char *argv[]);
 
 // callbacks
@@ -105,7 +100,7 @@ int main(int argc, char *argv[])
 {
 	InitConfig();
 
-	InitGameMananger();
+	InitGameManager();
 
 	InitGL(argc, argv);
 
@@ -120,7 +115,7 @@ void InitConfig()
 {
 }
 
-void InitGameMananger()
+void InitGameManager()
 {
 	GM->RegisterGameStateInstance(GAME_STATE_RUN, GameStateRun::GetInstance());
 	GM->ChangeState(GAME_STATE_RUN);
