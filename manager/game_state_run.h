@@ -1,6 +1,6 @@
 /*
  * $File: game_state_run.h
- * $Date: Thu Dec 02 20:03:14 2010 +0800
+ * $Date: Thu Dec 02 23:59:55 2010 +0800
  * $Author: Zhou Xinyu <zxytim@gmail.com>
  */
 /*
@@ -31,12 +31,10 @@
 
 class GameStateRun : public GameState
 {
-	private:
 		DECLARE_GAME_STATE_CLASS_DEFAULT_MEMBER_FUNCTION(Run);
-		void DrawCube(GLfloat len = 1, const Point &center = Point(0, 0, 0), const Colorf *colors = NULL, GLfloat padding = 0.04, const Colorf &padding_color = Colorf(0, 0, 0));
-		void DrawQuad(const Point a, const Point b, const Point c, const Point d);
-		void DrawMagicCube();
-		void doCubeRotate(GLfloat x, GLfloat y);
+	private:
+		Cube cube;
+
 		Point eye_pos,
 			  eye_up_dir,
 			  cube_center,
@@ -48,10 +46,31 @@ class GameStateRun : public GameState
 		bool mouse_button[3];
 		int mouse_x, mouse_y;
 		GLfloat eye_pos_move_sensitivity;
-		GLfloat eye_pos_rotate_sensitivity;
-		void MoveEyePos(const Vector &dir);
+
 		static const GLfloat CUBE_DIST_MIN = 5;
 		static const GLfloat CUBE_DIST_MAX = 7;
+
+		/*
+		 * Draw a quadrangle
+		 */
+		void DrawQuad(const Point &a, const Point &b, const Point &c, const Point &d);
+
+		/*
+		 * Draw a cube 
+		 */
+		//void DrawCubeGrid(GLfloat len = 1, const Point &center = Point(0, 0, 0), const Colorf *colors = NULL, GLfloat padding = 0.04, const Colorf &padding_color = Colorf(0, 0, 0));
+		void DrawCubeGrid(const Cube::CubeGrid &grid, GLfloat len = 1.0f, GLfloat padding = 0.04f, const Colorf &padding_color = Colorf(0, 0, 0));
+
+		/*
+		 * Draw a magic cube
+		 */
+		void DrawCube(const Cube &cube, const Point &center);
+		
+		void Selection();
+
+		void doCubeRotate(GLfloat x, GLfloat y);
+		GLfloat eye_pos_rotate_sensitivity;
+		void MoveEyePos(const Vector &dir);
 };
 
 #endif // __GAME_STATE_MENU_H__

@@ -1,6 +1,6 @@
 /*
  * $File: manager.h
- * $Date: Thu Dec 02 14:51:03 2010 +0800
+ * $Date: Thu Dec 02 23:05:26 2010 +0800
  * $Author: Zhou Xinyu <zxytim@gmail.com>
  */
 /*
@@ -107,6 +107,7 @@ class GameState
 		virtual void cbKeyUp(unsigned char key, int x, int y) = 0;
 		virtual void cbSpecialKeyPressed(int key, int x, int y) = 0;
 		virtual void cbSpecialKeyUp(int key, int x, int y) = 0;
+		virtual ~GameState(){};
 };
 
 

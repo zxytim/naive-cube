@@ -1,6 +1,6 @@
 /*
  * $File: manager.cpp
- * $Date: Wed Dec 01 11:24:57 2010 +0800
+ * $Date: Thu Dec 02 23:11:01 2010 +0800
  * $Author: Zhou Xinyu <zxytim@gmail.com>
  */
 /*
@@ -43,13 +43,11 @@ void GameManager::Init()
 
 void GameManager::Idle()
 {
-	Render();
+	CurState()->Idle();
 }
 
 void GameManager::Render()
 {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 	switch (progress)
 	{
 		case GAME_STATE_PROGRESS_LOADING:
@@ -67,7 +65,6 @@ void GameManager::Render()
 			}
 			break;
 	}
-	glutSwapBuffers();
 }
 
 void GameManager::Exit()

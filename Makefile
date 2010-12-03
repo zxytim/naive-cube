@@ -12,7 +12,9 @@ $(TARGET): $(OBJS)
 
 Makefile.dep: $(CXXSOURCES)
 	for i in $(CXXSOURCES); do \
-		$(CXX) -MM -MT "$(OBJDIR)/`echo $$i | sed -e 's/cpp\$$/o/g'`" $$i; \
+		obj=$(OBJDIR)/`echo $$i | sed -e 's/cpp\$$/o/g'`; \
+		mkdir -p `dirname $$obj`; \
+		$(CXX) -MM -MT $$obj $$i; \
 	done > Makefile.dep
 
 sinclude Makefile.dep
@@ -31,6 +33,8 @@ gdb: $(TARGET)
 
 clean:
 	rm $(TARGET) -f
+	rm $(OBJDIR) -rf
+	rm Makefile.dep -f
 	find . -name '*.o' -delete
 
 hg:

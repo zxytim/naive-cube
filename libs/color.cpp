@@ -1,6 +1,6 @@
 /*
  * $File: color.cpp
- * $Date: Thu Dec 02 18:09:54 2010 +0800
+ * $Date: Fri Dec 03 00:02:54 2010 +0800
  * $Author: Zhou Xinyu <zxytim@gmail.com>
  */
 /*
@@ -25,7 +25,7 @@
 
 #include "color.h"
 
-Colorf::Colorf(){}
+Colorf::Colorf(){r = g = b = 0, a = 1;}
 
 Colorf::Colorf(GLfloat _r, GLfloat _g, GLfloat _b, GLfloat _a)
 {

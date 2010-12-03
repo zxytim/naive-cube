@@ -1,6 +1,6 @@
 /*
  * $File: color.h
- * $Date: Thu Dec 02 18:09:23 2010 +0800
+ * $Date: Fri Dec 03 00:02:40 2010 +0800
  * $Author: Zhou Xinyu <zxytim@gmail.com>
  */
 /*
@@ -33,7 +33,7 @@ class Colorf
 	public:
 		GLfloat r, g, b, a;
 		Colorf();
-		Colorf(GLfloat r = 0, GLfloat g = 0, GLfloat b = 0, GLfloat a = 1);
+		Colorf(GLfloat r, GLfloat g, GLfloat b, GLfloat a = 1);
 };
 
 #endif

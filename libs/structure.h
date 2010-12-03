@@ -1,6 +1,6 @@
 /*
  * $File: structure.h
- * $Date: Thu Dec 02 20:43:19 2010 +0800
+ * $Date: Fri Dec 03 11:06:12 2010 +0800
  * $Author: Zhou Xinyu <zxytim@gmail.com>
  */
 /*
@@ -27,6 +27,8 @@
 
 #include "math.h"
 #include "color.h"
+#include "xb_cube.h"
+
 #include <GL/gl.h>
 
 class Quad
@@ -40,18 +42,47 @@ class Quad
 		//bool bind_texture;
 };
 
-class CubeGrid
-{
-	public:
-		// front back top bottom right left
-		Colorf color[6];
-		bool visible[6];
-};
+#define CUBE_STATE_FIX						0x00
+#define CUBE_STATE_ROT_RIGHT_0				0x01
+#define CUBE_STATE_ROT_RIGHT_1				0x02
+#define CUBE_STATE_ROT_LEFT_0				0x03
+#define CUBE_STATE_ROT_LEFT_1				0x04
+#define CUBE_STATE_ROT_UP_0					0x05
+#define CUBE_STATE_ROT_UP_1					0x06
+#define CUBE_STATE_ROT_DOWN_0				0x07
+#define CUBE_STATE_ROT_DOWN_1				0x08
+#define CUBE_STATE_ROT_FRONT_0				0x09
+#define CUBE_STATE_ROT_FRONT_1				0x0A
+#define CUBE_STATE_ROT_BACK_0				0x0B
+#define CUBE_STATE_ROT_BACK_1				0x0C
 
 class Cube
 {
 	public:
-		GLfloat cube_grid_len;
-		CubeGrid grid[3][3][3];
+		class CubeGrid
+		{
+			public:
+				int id;
+				Point center;
+				// front back top bottom right left
+				Colorf color[6];
+				bool visibility[6];
+				void set_default(int id, const Point &center);
+				void draw(GLfloat len, GLfloat padding, const Colorf &padding_color) const;
+		};
+		int size;
+		GLfloat grid_len;
+		CubeGrid *grid;
+		Colorf padding_color;
+		GLfloat padding;
+		/*
+		 * The cube is set to a reserved cube by default
+		 */
+		Cube(int size = 3, GLfloat grid_len = 1.0f, GLfloat padding = 0.04, const Colorf &pading_color = Colorf(0, 0, 0));
+		void reset();
+		void set_default(int size = 3, GLfloat grid_len = 1.0f, GLfloat padding = 0.04, const Colorf &pading_color = Colorf(0, 0, 0));
+		void draw(const Point &center) const;
+		int state;
 };
-#endif
+#endif // __CUBE_STRUCTURE_H__
+
