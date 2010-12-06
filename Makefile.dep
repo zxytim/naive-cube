@@ -1,0 +1,20 @@
+obj/./src/timer.o: src/timer.cpp src/timer.h
+obj/./src/exception.o: src/exception.cpp src/exception.h src/common.h
+obj/./src/color.o: src/color.cpp src/color.h
+obj/./src/game_phase_run.o: src/game_phase_run.cpp src/game_phase_run.h \
+ src/game.h src/header.h src/exception.h src/common.h src/renderer.h \
+ src/color.h src/math.h src/input.h
+obj/./src/math.o: src/math.cpp src/math.h
+obj/./src/common.o: src/common.cpp src/common.h
+obj/./src/renderer.o: src/renderer.cpp src/header.h src/exception.h \
+ src/common.h src/renderer.h src/color.h src/math.h
+obj/./src/main.o: src/main.cpp src/header.h src/exception.h src/common.h \
+ src/game.h src/renderer.h src/color.h src/math.h src/input.h
+obj/./src/input.o: src/input.cpp src/header.h src/exception.h \
+ src/common.h src/input.h src/game.h src/renderer.h src/color.h \
+ src/math.h
+obj/./src/game.o: src/game.cpp src/header.h src/exception.h src/common.h \
+ src/game.h src/renderer.h src/color.h src/math.h src/input.h \
+ src/game_phase_run.h src/timer.h
+obj/./src/cube.o: src/cube.cpp src/cube.h src/header.h src/exception.h \
+ src/common.h src/math.h src/color.h

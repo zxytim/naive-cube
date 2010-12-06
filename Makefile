@@ -4,7 +4,7 @@ OBJS = $(patsubst %.cpp, $(OBJDIR)/%.o, $(CXXSOURCES))
 CXX = g++
 CXXFLAGS = -DDEBUG -g #-Wall -Wextra -Werror 
 LIBS = -lGL -lglut -lGLU
-TARGET = cube
+TARGET = naive-cube
 
 $(TARGET): $(OBJS)
 	$(CXX) $(OBJS) -o $(TARGET) $(CXXFLAGS) $(LIBS)
@@ -33,9 +33,9 @@ gdb: $(TARGET)
 
 clean:
 	rm $(TARGET) -f
+	find . -name '*.o' -delete
 	rm $(OBJDIR) -rf
 	rm Makefile.dep -f
-	find . -name '*.o' -delete
 
 hg:
 	make clean
