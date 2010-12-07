@@ -1,6 +1,6 @@
 /*
  * $File: header.h
- * $Date: Tue Dec 07 10:06:13 2010 +0800
+ * $Date: Tue Dec 07 17:30:43 2010 +0800
  * $Author: Zhou Xinyu <zxytim@gmail.com>
  */
 /*
@@ -26,7 +26,7 @@
 #ifndef HEADER_GENERAL
 #define HEADER_GENERAL
 
-#ifdef __WIN32__
+#ifdef WIN32
 #include <windows.h>
 #endif
 

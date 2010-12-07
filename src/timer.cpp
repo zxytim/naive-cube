@@ -26,7 +26,7 @@
 #ifdef unix
 #include <sys/time.h>
 #include <unistd.h>
-#elif defined(__WIN32__)
+#elif defined(WIN32)
 #include <windows.h>
 #endif
 
@@ -66,7 +66,7 @@ void Timer::sleep(Time_t time)
 	time = toMs(time, precision);
 #ifdef unix
 	usleep(time);
-#elif defined(__WIN32__)
+#elif defined(WIN32)
 	Sleep(time);
 #endif
 }
@@ -76,7 +76,7 @@ void Timer::setPrecision(TimerPrecision tp)
 }
 
 
-#ifdef __WIN32__
+#ifdef WIN32
 Time_t getFreq()
 {
 	static bool freq_getted = false;
@@ -105,7 +105,7 @@ Time_t time_us()
 	timeval tv;
 	gettimeofday(&tv, 0);
 	return (Time_t)tv.tv_sec * (Time_t)1000000 + (Time_t)tv.tv_usec;
-#elif defined(__WIN32__)
+#elif defined(WIN32)
 	LARGE_INTEGER t;
 	QueryPerformanceCounter(&t);
 	return ((Time_t)t.QuadPart * (Time_t)1000000/ getFreq());

@@ -1,6 +1,6 @@
 /*
  * $File: main.cpp
- * $Date: Mon Dec 06 13:44:51 2010 +0800
+ * $Date: Tue Dec 07 17:32:36 2010 +0800
  * $Author: Zhou Xinyu <zxytim@gmail.com>
  */
 /*

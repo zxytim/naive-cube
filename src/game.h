@@ -1,6 +1,6 @@
 /*
  * $File: game.h
- * $Date: Tue Dec 07 08:56:42 2010 +0800
+ * $Date: Tue Dec 07 17:34:44 2010 +0800
  * $Author: Zhou Xinyu <zxytim@gmail.com>
  */
 /*

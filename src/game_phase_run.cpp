@@ -1,6 +1,6 @@
 /*
  * $File: game_phase_run.cpp
- * $Date: Tue Dec 07 16:31:15 2010 +0800
+ * $Date: Tue Dec 07 16:49:08 2010 +0800
  * $Author: Zhou Xinyu <zxytim@gmail.com>
  */
 /*
@@ -49,7 +49,8 @@ int GamePhaseRun::render()
 			cube_view != cube_views.end(); cube_view ++)
 		if ((*cube_view)->visible)
 		{
-			drawCube((*cube_view)->cube_size);
+			// TODO
+			//drawCube((*cube_view)->cube_size);
 		}
 
 	renderer->endRender();
