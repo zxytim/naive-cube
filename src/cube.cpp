@@ -1,6 +1,6 @@
 /*
  * $File: cube.cpp
- * $Date: Tue Dec 07 10:41:28 2010 +0800
+ * $Date: Tue Dec 07 16:18:36 2010 +0800
  * $Author: Zhou Xinyu <zxytim@gmail.com>
  */
 /*
@@ -36,6 +36,22 @@ Cube::Cube(int xlen, int ylen, int zlen)
 	size[0] = xlen;
 	size.y = ylen;
 	size.z = zlen;
+	deleteCubies();
+
+	Point center;
+	for (int i = 0; i < xlen; i ++)
+	{
+		center.x = 2 * i - xlen + 1;
+		for (int j = 0; j < ylen; j ++)
+		{
+			center.y = 2 * j - ylen + 1;
+			for (int k = 0; k < zlen; k ++)
+			{
+				center.z = 2 * k - zlen + 1;
+				cubies.push_back(new Cubie(center));
+			}
+		}
+	}
 }
 
 Cube::~Cube()
@@ -57,6 +73,28 @@ void Cube::deleteCubies()
 	foreach_cubie
 		delete (*cubie);
 }
+
+void Cube::addStickers()
+{
+	static Colorf color[] = 
+	{
+		Colorf(1, 0, 0), Colorf(0, 1, 0), Colorf(0, 0, 1),
+		Colorf(1, 1, 0), Colorf(1, 0, 1), Colorf(0, 1, 1)
+	};
+	int cnt = 0;
+	for (int i = 0; i < N_AXES; i ++)
+		for (int j = 0; j < 2; j ++)
+		{
+			int sign = j * 2 - 1; // -1 or +1
+			int location = sign * size[i];
+			cnt ++;
+			foreach_cubie
+				(*cubie)->addSticker(color[cnt], (Axis)i, location);
+		}
+}
+
+
+
 
 Sticker::Sticker()
 {
@@ -111,5 +149,22 @@ void Cubie::rotate(Axis axis, int location, Rotation direction)
 			break;
 	}
 
+}
+
+void Cubie::addSticker(const Colorf &color, Axis axis, int location)
+{
+	/*
+	 * The cubie get a sticke on the face only if it is one the required face
+	 */
+	if (location - (location > 0 ? 1 : -1) != original_center[axis])
+		return;
+	
+	Sticker *sticker = new Sticker();
+	sticker->color = color;
+	sticker->original_center = sticker->current_center = original_center;
+	sticker->original_center[axis] = location;
+	sticker->current_center[axis] = location;
+	
+	stickers.push_back(sticker);
 }
 

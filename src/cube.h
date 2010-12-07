@@ -1,6 +1,6 @@
 /*
  * $File: cube.h
- * $Date: Tue Dec 07 10:16:47 2010 +0800
+ * $Date: Tue Dec 07 16:17:11 2010 +0800
  * $Author: Zhou Xinyu <zxytim@gmail.com>
  */
 /*
@@ -33,17 +33,46 @@
 
 class Cubie;
 
+/*
+ * Here a cube consists of n * m * p "cubies". A cubie is a rectangular
+ * parrellelpipied. All the cubies shaped the cube a rectangular parrellelpipied
+ * too. In order to code easily, we make the gravity center of the cube
+ * locate in (0,0,0), and all the cubies in size 2 * 2 * 2, thus the center
+ * and faces of a cubie will be located in a integer coordinate. The absolute value
+ * of one of the dimensions of one face of a cube gracefully equals the number
+ * of cubies in that dimension. 
+ */
 class Cube
 {
 	public:
 		Cube(int xlen = 3, int ylen = 3, int zlen = 3);
 		~Cube();
 		
+		/*
+		 * A slice can be determined by an axis and the location on that axis,
+		 * where location is in range [-size[axis], +size[axis]].
+		 * if a slice is not a square, the @direction will automatically
+		 * change to ONE_EIGHTY.
+		 */
 		void moveSlice(Axis axis, int location, Rotation direction);
+
 	private:
 		Point size;
+
+		/*
+		 * The list of cubies
+		 */
 		std::list<Cubie *> cubies;
+
+		/*
+		 * Delete all cubies
+		 */
 		void deleteCubies();
+
+		/*
+		 * Add stickers to every cubie
+		 */
+		void addStickers();
 };
 
 class Sticker
@@ -51,7 +80,12 @@ class Sticker
 	public:
 		Sticker();
 		~Sticker();
+
+		/*
+		 * The color of this sticker
+		 */
 		Colorf color;
+
 		Point current_center;
 		Point original_center;
 };
@@ -61,10 +95,24 @@ class Cubie
 	public:
 		Cubie(const Point &center);
 		~Cubie();
+		/*
+		 * A axis and a location derminted a slice of a cube,
+		 * pass these arguments to the function, and rotate 
+		 * a single cubie
+		 */
 		void rotate(Axis axis, int location, Rotation direction);
+
+		/*
+		 * Add a sticker to one of the faces of a cubie
+		 */
+		void addSticker(const Colorf& color, Axis axis, int location);
 	private:
 		Point original_center;
 		Point current_center;
+
+		/*
+		 * The list of stickers
+		 */
 		std::list<Sticker *> stickers;
 };
 

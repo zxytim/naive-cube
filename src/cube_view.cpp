@@ -1,6 +1,6 @@
 /*
- * $File: game_phase_run.h
- * $Date: Tue Dec 07 16:28:57 2010 +0800
+ * $File: cube_view.cpp
+ * $Date: Tue Dec 07 16:30:32 2010 +0800
  * $Author: Zhou Xinyu <zxytim@gmail.com>
  */
 /*
@@ -23,38 +23,14 @@
 
 */
 
-#include "header.h"
-#include <list>
-#include "game.h"
-#include "cube.h"
 #include "cube_view.h"
 
-class GamePhaseRun : public GamePhase
+CubeView::CubeView()
 {
-	GAME_PHASE_DEFAULT_DECLARATION
-	public:
-		GamePhaseRun();
-		~GamePhaseRun();
+	visible = true;
+}
 
-	private:
-		/*
-		 * Store the global only instance of Renderer
-		 */
-		Renderer *renderer;
-
-		/*
-		 * The cube you are playing
-		 */
-		Cube *cube;
-
-		/*
-		 * The list of CubeViews
-		 */
-		std::list<CubeView *> cube_views;
-
-		/*
-		 * Draw the cube
-		 */
-		void drawCube();
-};
+CubeView::~CubeView()
+{
+}
 

@@ -1,6 +1,6 @@
 /*
  * $File: game_phase_run.cpp
- * $Date: Tue Dec 07 10:57:40 2010 +0800
+ * $Date: Tue Dec 07 16:31:15 2010 +0800
  * $Author: Zhou Xinyu <zxytim@gmail.com>
  */
 /*
@@ -28,10 +28,12 @@
 GamePhaseRun::GamePhaseRun()
 {
 	renderer = Renderer::instance();
+	cube = new Cube();
 }
 
 GamePhaseRun::~GamePhaseRun()
 {
+	delete cube;
 }
 
 int GamePhaseRun::loading()
@@ -42,6 +44,13 @@ int GamePhaseRun::loading()
 int GamePhaseRun::render()
 {
 	renderer->beginRender();
+
+	for (std::list<CubeView *>::iterator cube_view = cube_views.begin();
+			cube_view != cube_views.end(); cube_view ++)
+		if ((*cube_view)->visible)
+		{
+			drawCube((*cube_view)->cube_size);
+		}
 
 	renderer->endRender();
 }
