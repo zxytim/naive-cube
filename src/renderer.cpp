@@ -1,6 +1,6 @@
 /*
  * $File: renderer.cpp
- * $Date: Mon Dec 06 18:16:03 2010 +0800
+ * $Date: Tue Dec 07 09:09:54 2010 +0800
  * $Author: Zhou Xinyu <zxytim@gmail.com>
  */
 /*
@@ -137,5 +137,51 @@ void Renderer::rotateView(GLfloat degree, GLfloat x, GLfloat y, GLfloat z)
 void Renderer::rotateView(GLfloat degree, const Vector &axis)
 {
 	glRotatef(degree, axis.x, axis.y, axis.z);
+}
+
+void Renderer::drawVertex(GLfloat x, GLfloat y, GLfloat z)
+{
+	glVertex3f(x, y, z);
+}
+
+void Renderer::drawVertex(const Point &p)
+{
+	glVertex3f(p.x, p.y, p.z);
+}
+
+void Renderer::setColor(GLfloat r, GLfloat g, GLfloat b, GLfloat a)
+{
+	glColor4f(r, g, b, a);
+}
+
+void Renderer::setColor(const Colorf &color)
+{
+	glColor4f(color.r, color.g, color.b, color.a);
+}
+
+void Renderer::drawLine(const Point &a, const Point &b)
+{
+	glBegin(GL_LINES);
+	glVertex3f(a.x, a.y, a.z);
+	glVertex3f(b.x, b.y, b.z);
+	glEnd();
+}
+
+void Renderer::drawLines(const Point *vtxs, int n)
+{
+	glBegin(GL_LINES);
+	for (int i = 0; i < n; i ++)
+		glVertex3f(vtxs[i].x, vtxs[i].y, vtxs[i].z);
+	glEnd();
+}
+
+void Renderer::pushMatrix()
+{
+	glPushMatrix();
+}
+
+void Renderer::popMatrix()
+{
+	glPopMatrix();
 }
 

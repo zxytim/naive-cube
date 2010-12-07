@@ -2,12 +2,13 @@ CXXSOURCES = $(shell find . -name '*.cpp')
 OBJDIR = obj
 OBJS = $(patsubst %.cpp, $(OBJDIR)/%.o, $(CXXSOURCES))
 CXX = g++
-CXXFLAGS = -DDEBUG -g #-Wall -Wextra -Werror 
+DEFINES = -DDEBUG
+CXXFLAGS = -g #-Wall -Wextra -Werror 
 LIBS = -lGL -lglut -lGLU
 TARGET = naive-cube
 
 $(TARGET): $(OBJS)
-	$(CXX) $(OBJS) -o $(TARGET) $(CXXFLAGS) $(LIBS)
+	$(CXX) $(OBJS) -o $(TARGET) $(CXXFLAGS) $(LIBS) $(DEFINES)
 	@echo "Compilation succeed."
 
 Makefile.dep: $(CXXSOURCES)
@@ -20,7 +21,7 @@ Makefile.dep: $(CXXSOURCES)
 sinclude Makefile.dep
 
 obj/%.o: %.cpp
-	$(CXX) -c $< -o $@ $(CXXFLAGS) $(LIBS)
+	$(CXX) -c $< -o $@ $(CXXFLAGS) $(LIBS) $(DEFINES)
 
 
 .PHONY: run gdb clean

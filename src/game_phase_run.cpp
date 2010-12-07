@@ -1,6 +1,6 @@
 /*
  * $File: game_phase_run.cpp
- * $Date: Mon Dec 06 20:17:34 2010 +0800
+ * $Date: Tue Dec 07 10:57:40 2010 +0800
  * $Author: Zhou Xinyu <zxytim@gmail.com>
  */
 /*
@@ -27,6 +27,7 @@
 
 GamePhaseRun::GamePhaseRun()
 {
+	renderer = Renderer::instance();
 }
 
 GamePhaseRun::~GamePhaseRun()
@@ -35,11 +36,14 @@ GamePhaseRun::~GamePhaseRun()
 
 int GamePhaseRun::loading()
 {
-	return false;
+	return true;
 }
 
 int GamePhaseRun::render()
 {
+	renderer->beginRender();
+
+	renderer->endRender();
 }
 
 int GamePhaseRun::exiting()

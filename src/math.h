@@ -1,6 +1,6 @@
 /*
  * $File: math.h
- * $Date: Mon Dec 06 18:55:42 2010 +0800
+ * $Date: Tue Dec 07 10:30:27 2010 +0800
  * $Author: Zhou Xinyu <zxytim@gmail.com>
  */
 /*
@@ -25,6 +25,8 @@
 
 #ifndef HEADER_MATH
 #define HEADER_MATH
+
+#include "header.h"
 
 #include <GL/gl.h>
 
@@ -71,6 +73,7 @@ class Point
 		Coord_t getAngle(const Point &v) const;
 
 		Coord_t& operator [] (int index);
+
 };
 
 float invSqrt(float x);

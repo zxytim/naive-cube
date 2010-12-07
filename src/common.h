@@ -1,6 +1,6 @@
 /*
  * $File: common.h
- * $Date: Mon Dec 06 21:20:05 2010 +0800
+ * $Date: Tue Dec 07 08:46:51 2010 +0800
  * $Author: Zhou Xinyu <zxytim@gmail.com>
  */
 /*
@@ -35,15 +35,6 @@
 std::string __(std::string fmt ...);
 std::string itos(int num);
 
-#ifdef DEBUG
-void print_str(FILE* file, std::string msg);
-#define DEBUG_INFO(msg) \
-	do \
-	{ \
-		print_str(stderr, (std::string)"[DEBUG INFO] " + __PRETTY_FUNCTION__ + ": "+ msg); \
-	} while (0)
-
-#endif // DEBUG
 #endif // HEADER_COMMON
 
 

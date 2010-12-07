@@ -1,6 +1,6 @@
 /*
  * $File: cube.cpp
- * $Date: Mon Dec 06 18:53:15 2010 +0800
+ * $Date: Tue Dec 07 10:41:28 2010 +0800
  * $Author: Zhou Xinyu <zxytim@gmail.com>
  */
 /*
@@ -24,6 +24,12 @@
 */
 
 #include "cube.h"
+#define foreach_sticker \
+	for (std::list<Sticker *>::iterator sticker = stickers.begin(); \
+			sticker != stickers.end(); sticker ++)
+#define foreach_cubie \
+	for (std::list<Cubie *>::iterator cubie = cubies.begin(); \
+			cubie != cubies.end(); cubie ++)
 
 Cube::Cube(int xlen, int ylen, int zlen)
 {
@@ -39,12 +45,16 @@ Cube::~Cube()
 
 void Cube::moveSlice(Axis axis, int location, Rotation direction)
 {
+	if (size[axis + 1] != size[axis + 2])
+		direction = ONE_EIGHTY;
+
+	foreach_cubie
+		(*cubie)->rotate(axis, location, direction);
 }
 
 void Cube::deleteCubies()
 {
-	for (std::list<Cubie *>::iterator cubie = cubies.begin(); 
-			cubie != cubies.end(); cubie ++)
+	foreach_cubie
 		delete (*cubie);
 }
 
@@ -56,15 +66,50 @@ Sticker::~Sticker()
 {
 }
 
-Cubie::Cubie()
+Cubie::Cubie(const Point &center)
 {
+	original_center = current_center = center;
 }
 
 Cubie::~Cubie()
 {
-	for (std::list<Sticker *>::iterator sticker = stickers.begin(); 
-			sticker != stickers.end(); sticker ++)
+	foreach_sticker
 		delete (*sticker);
 }
 
+void Cubie::rotate(Axis axis, int location, Rotation direction)
+{
+	if (current_center[axis] != location)
+		return;
+
+	Coord_t t;
+	switch (direction)
+	{
+		case ANTICLOCKWISE:
+#define ROTATE_ANTICLOCKWISE(p) \
+			{t = p[axis + 1]; p[axis + 1] = - p[axis + 2]; p[axis + 2] = t;}
+			ROTATE_ANTICLOCKWISE(current_center);
+			foreach_sticker
+				ROTATE_ANTICLOCKWISE((*sticker)->current_center);
+#undef ROTATE_ANTICLOCKWISE
+			break;
+		case CLOCKWISE:
+#define ROTATE_CLOCKWISE(p) \
+			{t = p[axis + 1]; p[axis + 1] = p[axis + 2]; p[axis + 2] = -t;}
+			ROTATE_CLOCKWISE(current_center);
+			foreach_sticker
+				ROTATE_CLOCKWISE((*sticker)->current_center);
+#undef ROTATE_CLOCKWISE
+			break;
+		case ONE_EIGHTY:
+#define ROTATE_ONE_EIGHTY(p) \
+			{p[axis + 1] = - p[axis + 1]; p[axis + 2] = - p[axis + 2];}
+			ROTATE_ONE_EIGHTY(current_center);
+			foreach_sticker
+				ROTATE_ONE_EIGHTY((*sticker)->current_center);
+#undef ROTATE_ONE_EIGHTY
+			break;
+	}
+
+}
 

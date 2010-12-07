@@ -1,6 +1,6 @@
 /*
  * $File: input.cpp
- * $Date: Mon Dec 06 21:21:11 2010 +0800
+ * $Date: Tue Dec 07 08:39:28 2010 +0800
  * $Author: Zhou Xinyu <zxytim@gmail.com>
  */
 /*
@@ -34,10 +34,14 @@ static int glutspkeys[256];
 static int glutmouse[3];
 static int mouse_x, mouse_y;
 
-#ifdef DEBUG
 #include <string>
 static std::string key_name[N_KEYS];
-#endif
+static std::string button_name[N_MOUSE_BUTTON] = 
+{
+	"Left",
+	"Middle",
+	"Right"
+};
 
 Input::Input()
 {
@@ -77,7 +81,6 @@ Input::Input()
 	BIND(KEY_INSERT, GLUT_KEY_INSERT);
 #undef BIND
 
-#ifdef DEBUG
 	key_name[KEY_ESCAPE]		= "Esc";
 	key_name[KEY_F1]			= "F1";
 	key_name[KEY_F2]			= "F2";
@@ -106,7 +109,7 @@ Input::Input()
 			key_name[i] += (char)i;
 		else
 			key_name[i] = "code:" + itos(i);
-#endif
+
 }
 
 Input::~Input()
@@ -206,9 +209,13 @@ GLvoid Input::glcbMousePassiveMotion(int x, int y)
 	game->mouseMove(x, y);
 }
 
-#ifdef DEBUG
 std::string Input::getKeyName(int key)
 {
 	return key_name[key];
 }
-#endif
+
+std::string Input::getMouseButtonName(int button)
+{
+	return button_name[button];
+}
+

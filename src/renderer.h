@@ -1,6 +1,6 @@
 /*
  * $File: renderer.h
- * $Date: Mon Dec 06 18:55:18 2010 +0800
+ * $Date: Tue Dec 07 09:09:28 2010 +0800
  * $Author: Zhou Xinyu <zxytim@gmail.com>
  */
 /*
@@ -60,11 +60,23 @@ class Renderer
 		/*
 		 * Operations
 		 */
+		void pushMatrix();
+		void popMatrix();
+
 		void moveView(GLfloat x_change, GLfloat y_change, GLfloat z_change);
 		void moveView(const Point &dir);
 
 		void rotateView(GLfloat degree, GLfloat x, GLfloat y, GLfloat z);
 		void rotateView(GLfloat degree, const Vector &axis);
+
+		void drawVertex(GLfloat x, GLfloat y, GLfloat z);
+		void drawVertex(const Point &p);
+
+		void setColor(GLfloat r, GLfloat g, GLfloat b, GLfloat a = 1);
+		void setColor(const Colorf &color);
+
+		void drawLine(const Point &a, const Point &b);
+		void drawLines(const Point *vtxs, int n);
 	private:
 		/*
 		 * The handle of window

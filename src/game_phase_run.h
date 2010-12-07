@@ -1,6 +1,6 @@
 /*
  * $File: game_phase_run.h
- * $Date: Mon Dec 06 19:28:40 2010 +0800
+ * $Date: Tue Dec 07 08:57:18 2010 +0800
  * $Author: Zhou Xinyu <zxytim@gmail.com>
  */
 /*
@@ -31,5 +31,7 @@ class GamePhaseRun : public GamePhase
 	public:
 		GamePhaseRun();
 		~GamePhaseRun();
+	private:
+		Renderer *renderer;
 };
 

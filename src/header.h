@@ -1,6 +1,6 @@
 /*
  * $File: header.h
- * $Date: Mon Dec 06 20:36:26 2010 +0800
+ * $Date: Tue Dec 07 10:06:13 2010 +0800
  * $Author: Zhou Xinyu <zxytim@gmail.com>
  */
 /*
@@ -35,11 +35,12 @@
 #define WINDOW_WIDTH_DEFAULT					800
 #define WINDOW_HEIGHT_DEFAULT					600
 
-enum Axis {X, Y, Z, N_AXIS};
+enum Axis {X, Y, Z, N_AXES};
 enum Rotation {CLOCKWISE, ANTICLOCKWISE, ONE_EIGHTY};
 
 
 #include "exception.h"
 #include "common.h"
+#include "log.h"
 
 #endif // HEADER_GENERAL

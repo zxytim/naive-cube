@@ -1,6 +1,6 @@
 /*
- * $File: debug.h
- * $Date: Mon Dec 06 21:53:03 2010 +0800
+ * $File: log.h
+ * $Date: Tue Dec 07 08:21:09 2010 +0800
  * $Author: Zhou Xinyu <zxytim@gmail.com>
  */
 /*
@@ -23,21 +23,39 @@
 
 */
 
-#ifndef HEADER_DEBUG
-#define HEADER_DEBUG
 
-#define DEBUG_LEVEL_DEBUG		0
-#define DEBUG_LEVEL_INFO		1
-#define DEBUG_LEVEL_WARNING		2
-#define DEBUG_LEVEL_ERROR		3
-#define DEBUG_LEVEL_CRITICAL	4
+/*
+ * naive-cube loggin system
+ */
+#ifndef HEADER_LOG
+#define HEADER_LOG
 
-class Debug
+#include <string>
+
+enum LogLevel
 {
-	public:
-		Debug();
-		Debug(std::string log_file);
-		void debug();
+	LOG_LEVEL_DEBUG,
+	LOG_LEVEL_INFO,
+	LOG_LEVEL_WARNING,
+	LOG_LEVEL_ERROR,
+	LOG_LEVEL_CRITICAL,
+	N_LOG_LEVEL
 };
 
-#endif // HEADER_DEBUG
+class Log
+{
+	public:
+		static Log* instance();
+		static void enable(LogLevel level);
+		static void disable(LogLevel level);
+		static void log(LogLevel level, std::string msg);
+		static void enableFile();
+		static void disableFile();
+		static void setLogFile(std::string file);
+
+	private:
+		Log();
+		~Log();
+};
+
+#endif // HEADER_LOG

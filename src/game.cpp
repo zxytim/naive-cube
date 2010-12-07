@@ -1,6 +1,6 @@
 /*
  * $File: game.cpp
- * $Date: Mon Dec 06 21:24:36 2010 +0800
+ * $Date: Tue Dec 07 11:00:10 2010 +0800
  * $Author: Zhou Xinyu <zxytim@gmail.com>
  */
 /*
@@ -56,24 +56,22 @@ GamePhase *Game::curPhase()
 
 void Game::registerGamePhase(GamePhase *phase, GamePhaseType phase_id)
 {
-#ifdef DEBUG
-	DEBUG_INFO(__("GamePhase %d registering", phase_id));
-#endif
+	Log::log(LOG_LEVEL_INFO, __("GamePhase %d registering", phase_id));
 	game_phase[phase_id] = phase;
 }
 
 void Game::switchPhase(GamePhaseType phase)
 {
-#ifdef DEBUG
-	DEBUG_INFO(__("switch to phase %d", phase));
-#endif
+	Log::log(LOG_LEVEL_INFO, __("switch to phase %d", phase));
 	if (curPhase())
 	{
+		Log::log(LOG_LEVEL_INFO, __("Phase %d exiting ...", phase));
 		phase_progress = GAME_PHASE_PROGRESS_EXITING;
 		next_phase = phase;
 	}
 	else
 	{
+		Log::log(LOG_LEVEL_INFO, __("Phase %d start loading ...", phase));
 		phase_progress = GAME_PHASE_PROGRESS_LOADING;
 		cur_phase = phase;
 	}
@@ -81,9 +79,7 @@ void Game::switchPhase(GamePhaseType phase)
 
 void Game::init(int argc, char *argv[])
 {
-#ifdef DEBUG
-	DEBUG_INFO("Initializing...");
-#endif
+	Log::log(LOG_LEVEL_INFO, "Initializing...");
 	memset(game_phase, 0, sizeof(game_phase));
 
 	registerGamePhase(new GamePhaseRun(), GAME_PHASE_RUN);
@@ -111,6 +107,11 @@ void Game::init(int argc, char *argv[])
 	glutIdleFunc(glcbIdle);
 
 	glutReshapeFunc(glcbReshape);
+
+	/*
+	 * Log settings
+	 */
+	Log::disable(LOG_LEVEL_CRITICAL);
 }
 
 void Game::execute()
@@ -140,9 +141,7 @@ void Game::idle()
 		case GAME_PHASE_PROGRESS_LOADING:
 			if (curPhase()->loading())
 			{
-#ifdef DEBUG
-				DEBUG_INFO(__("Phase %d loading finished", cur_phase));
-#endif
+				Log::log(LOG_LEVEL_INFO, __("Phase %d loading finished", cur_phase));
 				phase_progress = GAME_PHASE_PROGRESS_RUNNING;
 			}
 			break;
@@ -154,10 +153,8 @@ void Game::idle()
 		case GAME_PHASE_PROGRESS_EXITING:
 			if (curPhase()->exiting())
 			{
-#ifdef DEBUG
-				DEBUG_INFO(__("Phase %d exited", cur_phase));
-				DEBUG_INFO(__("Phase %d start loading", next_phase));
-#endif
+				Log::log(LOG_LEVEL_INFO, __("Phase %d exited", cur_phase));
+				Log::log(LOG_LEVEL_INFO, __("Phase %d start loading ...", next_phase));
 				phase_progress = GAME_PHASE_PROGRESS_LOADING;
 				cur_phase = next_phase;
 			}
@@ -167,25 +164,19 @@ void Game::idle()
 
 void Game::reshape(int width, int height)
 {
-#ifdef DEBUG
-	DEBUG_INFO(__("Window size changing to %dx%d", width, height));
-#endif
+	Log::log(LOG_LEVEL_INFO, __("Window size changing to %dx%d", width, height));
 	renderer->reshape(width, height);
 }
 
 void Game::setFPS(int fps_)
 {
-#ifdef DEBUG
-	DEBUG_INFO(__("FPS is set to %d", fps_));
-#endif
+	Log::log(LOG_LEVEL_INFO, __("FPS is set to %d", fps_));
 	fps = fps_;
 }
 
 void Game::exit()
 {
-#ifdef DEBUG
-	DEBUG_INFO("Game exiting...");
-#endif
+	Log::log(LOG_LEVEL_INFO, "Game exiting...");
 	for (int i = 0; i < N_GAME_PHASE; i ++)
 		if (game_phase[i])
 			delete game_phase[i];
@@ -208,30 +199,32 @@ GLvoid Game::glcbReshape(int width, int height)
 
 void Game::keyPressed(int key)
 {
-#ifdef DEBUG
-	DEBUG_INFO(__("Key <%s> pressed", Input::getKeyName(key).c_str()));
-#endif
+	Log::log(LOG_LEVEL_CRITICAL, __("Key <%s> pressed", Input::getKeyName(key).c_str()));
 	curPhase()->keyPressed(key);
 }
 
 void Game::keyReleased(int key)
 {
+	Log::log(LOG_LEVEL_CRITICAL, __("Key <%s> released", Input::getKeyName(key).c_str()));
 	curPhase()->keyReleased(key);
 }
 
 
 void Game::mouseUp(int button, int x, int y)
 {
+	Log::log(LOG_LEVEL_CRITICAL, __("Mouse button <%s> up", Input::getMouseButtonName(button).c_str()));
 	curPhase()->mouseUp(button, x, y);
 }
 
 void Game::mouseDown(int button, int x, int y)
 {
+	Log::log(LOG_LEVEL_CRITICAL, __("Mouse button <%s> down", Input::getMouseButtonName(button).c_str()));
 	curPhase()->mouseDown(button, x, y);
 }
 
 void Game::mouseMove(int x, int y)
 {
+	Log::log(LOG_LEVEL_CRITICAL, __("Mouse move to (%d, %d)", x, y));
 	curPhase()->mouseMove(x, y);
 }
 

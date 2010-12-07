@@ -1,6 +1,6 @@
 /*
  * $File: cube.h
- * $Date: Mon Dec 06 18:48:22 2010 +0800
+ * $Date: Tue Dec 07 10:16:47 2010 +0800
  * $Author: Zhou Xinyu <zxytim@gmail.com>
  */
 /*
@@ -40,7 +40,6 @@ class Cube
 		~Cube();
 		
 		void moveSlice(Axis axis, int location, Rotation direction);
-
 	private:
 		Point size;
 		std::list<Cubie *> cubies;
@@ -53,15 +52,19 @@ class Sticker
 		Sticker();
 		~Sticker();
 		Colorf color;
+		Point current_center;
+		Point original_center;
 };
 
 class Cubie
 {
 	public:
-		Cubie();
+		Cubie(const Point &center);
 		~Cubie();
-
+		void rotate(Axis axis, int location, Rotation direction);
 	private:
+		Point original_center;
+		Point current_center;
 		std::list<Sticker *> stickers;
 };
 

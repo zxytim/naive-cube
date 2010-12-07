@@ -1,6 +1,6 @@
 /*
  * $File: input.h
- * $Date: Mon Dec 06 21:21:41 2010 +0800
+ * $Date: Tue Dec 07 08:38:23 2010 +0800
  * $Author: Zhou Xinyu <zxytim@gmail.com>
  */
 /*
@@ -68,6 +68,8 @@
 #define MOUSE_LEFT_BUTTON				0x00
 #define MOUSE_MIDDLE_BUTTON				0x01
 #define MOUSE_RIGHT_BUTTON				0x02
+#define N_MOUSE_BUTTON					(MOUSE_RIGHT_BUTTON + 1)
+
 #define MOUSE_UP						0x00
 #define MOUSE_DOWN						0x01
 
@@ -82,12 +84,11 @@ class Input
 		
 		void getMousePos(int &x, int &y);
 
-#ifdef DEBUG
 		/*
 		 * Debug functions
 		 */
 		static std::string getKeyName(int key);
-#endif
+		static std::string getMouseButtonName(int button);
 
 	private:
 		Input();
