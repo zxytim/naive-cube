@@ -1,6 +1,6 @@
 /*
  * $File: game_phase_run.h
- * $Date: Tue Dec 07 16:28:57 2010 +0800
+ * $Date: Tue Dec 28 11:28:02 2010 +0800
  * $Author: Zhou Xinyu <zxytim@gmail.com>
  */
 /*
@@ -37,6 +37,7 @@ class GamePhaseRun : public GamePhase
 		~GamePhaseRun();
 
 	private:
+
 		/*
 		 * Store the global only instance of Renderer
 		 */
@@ -53,8 +54,8 @@ class GamePhaseRun : public GamePhase
 		std::list<CubeView *> cube_views;
 
 		/*
-		 * Draw the cube
+		 * Add a cube view
 		 */
-		void drawCube();
+		void addCubeView(bool visible, GLfloat cube_size, GLfloat relative_x, GLfloat relative_y);
 };
 

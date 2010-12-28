@@ -1,6 +1,6 @@
 /*
  * $File: cube_view.h
- * $Date: Tue Dec 07 16:30:29 2010 +0800
+ * $Date: Tue Dec 28 10:47:41 2010 +0800
  * $Author: Zhou Xinyu <zxytim@gmail.com>
  */
 /*
@@ -27,6 +27,7 @@
 #define HEADER_CUBE_VIEW
 
 #include "header.h"
+#include "math.h"
 #include <GL/gl.h>
 
 class CubeView
@@ -34,9 +35,23 @@ class CubeView
 	public:
 		CubeView();
 		~CubeView();
+		/*
+		 * whether this one will show on screen
+		 */
 		bool visible;
 		GLfloat cube_size;
-		GLfloat center_x, center_y;
+		/*
+		 * The relative coordinate on the screen,
+		 * float in range 0 to 1
+		 */
+		GLfloat relative_x, relative_y; 
+
+		Point position;
+		/*
+		 * With turn and tilt, make 3 faces visible in the begining
+		 */
+		GLfloat turn,  // Angle around Y-axis
+				tilt;  
 };
 
-#endif
+#endif // HEADER_CUBE_VIEW

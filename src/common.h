@@ -1,6 +1,6 @@
 /*
  * $File: common.h
- * $Date: Tue Dec 07 08:46:51 2010 +0800
+ * $Date: Thu Dec 09 13:07:57 2010 +0800
  * $Author: Zhou Xinyu <zxytim@gmail.com>
  */
 /*
@@ -31,6 +31,12 @@
 #endif 
 
 #include <string>
+
+/*
+ * Some useful macros
+ */
+#define MAX(a, b) ((a) > (b) ? (a) : (b))
+#define MIN(a, b) ((a) < (b) ? (a) : (b))
 
 std::string __(std::string fmt ...);
 std::string itos(int num);

@@ -1,6 +1,6 @@
 /*
  * $File: game.cpp
- * $Date: Tue Dec 07 11:00:10 2010 +0800
+ * $Date: Mon Dec 20 21:00:39 2010 +0800
  * $Author: Zhou Xinyu <zxytim@gmail.com>
  */
 /*
@@ -54,26 +54,31 @@ GamePhase *Game::curPhase()
 	return game_phase[cur_phase];
 }
 
+GamePhase *Game::nextPhase()
+{
+	return game_phase[next_phase];
+}
+
 void Game::registerGamePhase(GamePhase *phase, GamePhaseType phase_id)
 {
-	Log::log(LOG_LEVEL_INFO, __("GamePhase %d registering", phase_id));
 	game_phase[phase_id] = phase;
+	Log::log(LOG_LEVEL_INFO, __("GamePhase `%s' registered", phase->name().c_str()));
 }
 
 void Game::switchPhase(GamePhaseType phase)
 {
-	Log::log(LOG_LEVEL_INFO, __("switch to phase %d", phase));
+	Log::log(LOG_LEVEL_INFO, __("Switch to phase `%s'", game_phase[phase]->name().c_str()));
 	if (curPhase())
 	{
-		Log::log(LOG_LEVEL_INFO, __("Phase %d exiting ...", phase));
+		Log::log(LOG_LEVEL_INFO, __("Phase `%s' exiting ...", curPhase()->name().c_str()));
 		phase_progress = GAME_PHASE_PROGRESS_EXITING;
 		next_phase = phase;
 	}
 	else
 	{
-		Log::log(LOG_LEVEL_INFO, __("Phase %d start loading ...", phase));
-		phase_progress = GAME_PHASE_PROGRESS_LOADING;
 		cur_phase = phase;
+		Log::log(LOG_LEVEL_INFO, __("Phase `%s' start loading ...", curPhase()->name().c_str()));
+		phase_progress = GAME_PHASE_PROGRESS_LOADING;
 	}
 }
 
@@ -141,7 +146,7 @@ void Game::idle()
 		case GAME_PHASE_PROGRESS_LOADING:
 			if (curPhase()->loading())
 			{
-				Log::log(LOG_LEVEL_INFO, __("Phase %d loading finished", cur_phase));
+				Log::log(LOG_LEVEL_INFO, __("Phase `%s' loading finished", curPhase()->name().c_str()));
 				phase_progress = GAME_PHASE_PROGRESS_RUNNING;
 			}
 			break;
@@ -153,10 +158,11 @@ void Game::idle()
 		case GAME_PHASE_PROGRESS_EXITING:
 			if (curPhase()->exiting())
 			{
-				Log::log(LOG_LEVEL_INFO, __("Phase %d exited", cur_phase));
-				Log::log(LOG_LEVEL_INFO, __("Phase %d start loading ...", next_phase));
+				Log::log(LOG_LEVEL_INFO, __("Phase `%s' exited", curPhase()->name().c_str()));
+				Log::log(LOG_LEVEL_INFO, __("Phase `%s' start loading ...", nextPhase()->name().c_str()));
 				phase_progress = GAME_PHASE_PROGRESS_LOADING;
 				cur_phase = next_phase;
+				next_phase = GAME_PHASE_NONE;
 			}
 	}
 	timer.begin();
@@ -227,7 +233,6 @@ void Game::mouseMove(int x, int y)
 	Log::log(LOG_LEVEL_CRITICAL, __("Mouse move to (%d, %d)", x, y));
 	curPhase()->mouseMove(x, y);
 }
-
 
 GamePhase::GamePhase()
 {

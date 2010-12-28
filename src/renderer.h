@@ -1,6 +1,6 @@
 /*
  * $File: renderer.h
- * $Date: Tue Dec 07 09:09:28 2010 +0800
+ * $Date: Tue Dec 28 11:17:43 2010 +0800
  * $Author: Zhou Xinyu <zxytim@gmail.com>
  */
 /*
@@ -23,10 +23,16 @@
 
 */
 
-#define VIEW_ANGLE			30
+#ifndef HEADER_RENDERER
+#define HEADER_RENDERER
+
+#include "header.h"
+#include <GL/gl.h>
 
 #include "color.h"
 #include "math.h"
+
+const GLfloat VIEW_ANGLE = 30.0;
 
 class Renderer
 {
@@ -77,6 +83,18 @@ class Renderer
 
 		void drawLine(const Point &a, const Point &b);
 		void drawLines(const Point *vtxs, int n);
+
+		void drawQuads(const Point &v0, const Point &v1, const Point &v2, const Point &v3);
+		void drawQuads(const Point *vtxs);
+
+		void setNormal(const Vector &normal);
+		void setNormal(GLfloat x, GLfloat y, GLfloat z);
+		/*
+		 * Attributes
+		 */
+		int width();
+		int height();
+
 	private:
 		/*
 		 * The handle of window
@@ -100,4 +118,4 @@ class Renderer
 		 */
 		bool fullscreen;
 };
-
+#endif // HEADER_RENDERER

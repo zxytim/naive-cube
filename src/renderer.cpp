@@ -1,6 +1,6 @@
 /*
  * $File: renderer.cpp
- * $Date: Tue Dec 07 09:09:54 2010 +0800
+ * $Date: Tue Dec 28 11:17:59 2010 +0800
  * $Author: Zhou Xinyu <zxytim@gmail.com>
  */
 /*
@@ -96,6 +96,9 @@ void Renderer::reshape(int width, int height)
 	if (height == 0)
 		height = 1;
 	
+	window_width = width;
+	window_height = height;
+
 	glViewport(0, 0, width, height);
 
 	glMatrixMode(GL_PROJECTION);
@@ -175,6 +178,43 @@ void Renderer::drawLines(const Point *vtxs, int n)
 	glEnd();
 }
 
+
+void Renderer::drawQuads(const Point &v0, const Point &v1, const Point &v2, const Point &v3)
+{
+	glBegin(GL_QUADS);
+
+	glVertex3f(v0.x, v0.y, v0.z);
+	glVertex3f(v1.x, v1.y, v1.z);
+	glVertex3f(v2.x, v2.y, v2.z);
+	glVertex3f(v3.x, v3.y, v3.z);
+
+	glEnd();
+}
+
+void Renderer::drawQuads(const Point *vtxs)
+{
+	glBegin(GL_QUADS);
+	
+	for (int i = 0; i < 4; i ++)
+		glVertex3f(vtxs[i].x, vtxs[i].y, vtxs[i].z);
+	
+	glEnd();
+}
+
+
+void Renderer::setNormal(const Vector &normal)
+{
+	glNormal3f(normal.x, normal.y, normal.z);
+}
+
+void Renderer::setNormal(GLfloat x, GLfloat y, GLfloat z)
+{
+	glNormal3f(x, y, z);
+}
+
+void setNormal(GLfloat x, GLfloat y, GLfloat z);
+
+
 void Renderer::pushMatrix()
 {
 	glPushMatrix();
@@ -183,5 +223,18 @@ void Renderer::pushMatrix()
 void Renderer::popMatrix()
 {
 	glPopMatrix();
+}
+
+/*
+ * Attributes
+ */
+int Renderer::width()
+{
+	return window_width;
+}
+
+int Renderer::height()
+{
+	return window_height;
 }
 

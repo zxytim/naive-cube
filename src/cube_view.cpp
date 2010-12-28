@@ -1,6 +1,6 @@
 /*
  * $File: cube_view.cpp
- * $Date: Tue Dec 07 16:30:32 2010 +0800
+ * $Date: Wed Dec 08 17:34:12 2010 +0800
  * $Author: Zhou Xinyu <zxytim@gmail.com>
  */
 /*
@@ -27,7 +27,6 @@
 
 CubeView::CubeView()
 {
-	visible = true;
 }
 
 CubeView::~CubeView()

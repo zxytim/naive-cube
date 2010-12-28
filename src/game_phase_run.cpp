@@ -1,6 +1,6 @@
 /*
  * $File: game_phase_run.cpp
- * $Date: Tue Dec 07 16:49:08 2010 +0800
+ * $Date: Tue Dec 28 11:30:29 2010 +0800
  * $Author: Zhou Xinyu <zxytim@gmail.com>
  */
 /*
@@ -23,17 +23,36 @@
 
 */
 
+#include "header.h"
 #include "game_phase_run.h"
+#include <cmath>
 
 GamePhaseRun::GamePhaseRun()
 {
 	renderer = Renderer::instance();
 	cube = new Cube();
+	addCubeView(true, 1.0f, 0.5, 0.5);
 }
 
 GamePhaseRun::~GamePhaseRun()
 {
 	delete cube;
+}
+
+std::string GamePhaseRun::name()
+{
+	return "GamePhaseRun";
+}
+
+
+void GamePhaseRun::addCubeView(bool visible, GLfloat cube_size, GLfloat relative_x, GLfloat relative_y)
+{
+	CubeView *cv = new CubeView();
+	cv->visible = visible;
+	cv->cube_size = cube_size;
+	cv->relative_x= relative_x;
+	cv->relative_y = relative_y;
+	cube_views.push_back(cv);
 }
 
 int GamePhaseRun::loading()
@@ -45,19 +64,46 @@ int GamePhaseRun::render()
 {
 	renderer->beginRender();
 
+	
 	for (std::list<CubeView *>::iterator cube_view = cube_views.begin();
 			cube_view != cube_views.end(); cube_view ++)
-		if ((*cube_view)->visible)
-		{
-			// TODO
-			//drawCube((*cube_view)->cube_size);
-		}
+	{
+		CubeView *cv = (*cube_view);
+
+
+		GLfloat ratio = (GLfloat)renderer->width() / renderer->height();
+
+		GLfloat sight_height = -CUBE_CENTER_Z * 2.0 * tan(VIEW_ANGLE / 180.0 * M_PI / 2);
+		GLfloat sight_width = ratio * sight_height;
+
+		cv->position.x = sight_width * cv->relative_x;
+		cv->position.y = sight_height * cv->relative_y;
+		cv->position.z = CUBE_CENTER_Z;
+
+		renderer->pushMatrix();
+
+		renderer->moveView(cv->position.x, cv->position.y, cv->position.z);
+
+		renderer->setColor(1, 1, 1);
+		renderer->drawLine(Point(0, 0, 0), Point(1, 1, 1));
+
+
+		renderer->rotateView(cv->turn, 0, 1, 0);
+		renderer->rotateView(cv->tilt, 1, 0, -1);
+
+
+		cube->drawCube(renderer, cv);
+
+		renderer->popMatrix();
+	}
 
 	renderer->endRender();
 }
+
 
 int GamePhaseRun::exiting()
 {
 	return true;
 }
+
 

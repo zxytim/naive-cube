@@ -1,6 +1,6 @@
 /*
  * $File: cube.h
- * $Date: Tue Dec 07 16:17:11 2010 +0800
+ * $Date: Mon Dec 27 11:32:01 2010 +0800
  * $Author: Zhou Xinyu <zxytim@gmail.com>
  */
 /*
@@ -30,6 +30,8 @@
 #include "header.h"
 #include "math.h"
 #include "color.h"
+#include "renderer.h"
+#include "cube_view.h"
 
 class Cubie;
 
@@ -56,13 +58,26 @@ class Cube
 		 */
 		void moveSlice(Axis axis, int location, Rotation direction);
 
-	private:
+		/*
+		 * Size of the Cube
+		 */
 		Point size;
 
 		/*
 		 * The list of cubies
 		 */
 		std::list<Cubie *> cubies;
+
+		/*
+		 * Draw this cube one the screen with CubeView
+		 */
+		void drawCube(Renderer * renderer, CubeView *cv);
+
+	private:
+
+		Axis moving_axis;
+		int moving_slice;
+		int moving_angle;
 
 		/*
 		 * Delete all cubies
@@ -106,6 +121,17 @@ class Cubie
 		 * Add a sticker to one of the faces of a cubie
 		 */
 		void addSticker(const Colorf& color, Axis axis, int location);
+
+		/*
+		 * Whether this cubie has a sticker
+		 */
+		bool hasSticker();
+
+		/*
+		 * Draw cubie
+		 */
+		void drawCubie(Renderer * renderer, GLfloat size, Axis axis, int slice, int angle);
+
 	private:
 		Point original_center;
 		Point current_center;

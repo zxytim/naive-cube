@@ -1,6 +1,6 @@
 /*
  * $File: header.h
- * $Date: Tue Dec 07 17:30:43 2010 +0800
+ * $Date: Tue Dec 28 10:51:52 2010 +0800
  * $Author: Zhou Xinyu <zxytim@gmail.com>
  */
 /*
@@ -30,10 +30,13 @@
 #include <windows.h>
 #endif
 
+#include <GL/gl.h>
+
 #define GAME_NAME "naive-cube"
 
-#define WINDOW_WIDTH_DEFAULT					800
-#define WINDOW_HEIGHT_DEFAULT					600
+const int WINDOW_WIDTH_DEFAULT					= 800;
+const int WINDOW_HEIGHT_DEFAULT					= 600;
+const GLfloat CUBE_CENTER_Z						= -6.0;
 
 enum Axis {X, Y, Z, N_AXES};
 enum Rotation {CLOCKWISE, ANTICLOCKWISE, ONE_EIGHTY};

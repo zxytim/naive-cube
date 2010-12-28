@@ -1,6 +1,6 @@
 /*
  * $File: cube.cpp
- * $Date: Tue Dec 07 16:18:36 2010 +0800
+ * $Date: Tue Dec 28 11:23:57 2010 +0800
  * $Author: Zhou Xinyu <zxytim@gmail.com>
  */
 /*
@@ -166,5 +166,50 @@ void Cubie::addSticker(const Colorf &color, Axis axis, int location)
 	sticker->current_center[axis] = location;
 	
 	stickers.push_back(sticker);
+}
+
+bool Cubie::hasSticker()
+{
+	return !stickers.empty();
+}
+
+void Cube::drawCube(Renderer * renderer, CubeView *cv)
+{
+	if (!cv->visible)
+		return;
+	for (std::list<Cubie *>::iterator cubie = cubies.begin();
+			cubie != cubies.end(); cubie ++)
+		if ((*cubie)->hasSticker())
+			(*cubie)->drawCubie(renderer, cv->cube_size, moving_axis, moving_slice, moving_angle);
+}
+
+void Cubie::drawCubie(Renderer * renderer, GLfloat size, Axis axis, int slice, int angle)
+{
+
+	Point center;
+	for (int i = 0; i < N_AXES; i ++)
+		center[i] = current_center[i] / 2.0 * size;
+
+	if (angle != 0)
+	{
+		Point p;
+		p[axis] = 1.0;
+		renderer->rotateView(angle, p);
+	}
+	renderer->setColor(Colorf(0, 0, 0));
+
+	renderer->moveView(center);
+
+	for (int axis = 0; axis < 3; axis ++)
+	{
+		int coord0 = 0, coord1 = 1;
+		for (int face = 0; face < 2; face ++)
+		{
+			Vector normal;
+			normal[axis] = 2.0 * face - 1.0;
+			renderer->setNormal(normal);
+
+		}
+	}
 }
 

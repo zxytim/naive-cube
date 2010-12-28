@@ -1,6 +1,6 @@
 /*
  * $File: game.h
- * $Date: Tue Dec 07 17:34:44 2010 +0800
+ * $Date: Mon Dec 20 20:56:53 2010 +0800
  * $Author: Zhou Xinyu <zxytim@gmail.com>
  */
 /*
@@ -32,6 +32,7 @@
 #include <GL/glut.h>
 #include "renderer.h"
 #include "input.h"
+#include <string>
 
 #define GAME_DEFAULT_FPS			60
 
@@ -79,6 +80,7 @@ class Game
 		GamePhaseType next_phase;
 
 		GamePhase *curPhase();
+		GamePhase *nextPhase();
 
 		GamePhaseProgress phase_progress;
 
@@ -110,6 +112,9 @@ class GamePhase
 	public:
 		GamePhase();
 		~GamePhase();
+
+		virtual std::string name() = 0;
+
 		/*
 		 * Game manager will hold on calling the functions below until they
 		 * return true
@@ -147,6 +152,7 @@ class GamePhase
 #define GAME_PHASE_DEFAULT_DECLARATION \
 	friend class Game; \
 	private: \
+		std::string name(); \
 		int loading(); \
 		int render(); \
 		int exiting(); \
@@ -154,6 +160,7 @@ class GamePhase
 		void keyReleased(int key); \
 		void mouseUp(int key, int x, int y); \
 		void mouseDown(int key, int x, int y); \
-		void mouseMove(int x, int y); \
+		void mouseMove(int x, int y); 
 
 #endif // HEADER_GAME
+
