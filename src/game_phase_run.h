@@ -1,6 +1,6 @@
 /*
  * $File: game_phase_run.h
- * $Date: Tue Dec 28 11:28:02 2010 +0800
+ * $Date: Tue Dec 28 16:03:54 2010 +0800
  * $Author: Zhou Xinyu <zxytim@gmail.com>
  */
 /*
@@ -56,6 +56,6 @@ class GamePhaseRun : public GamePhase
 		/*
 		 * Add a cube view
 		 */
-		void addCubeView(bool visible, GLfloat cube_size, GLfloat relative_x, GLfloat relative_y);
+		void addCubeView(bool visible, GLfloat cube_size, GLfloat relative_x, GLfloat relative_y, GLfloat turn, GLfloat tilt);
 };
 

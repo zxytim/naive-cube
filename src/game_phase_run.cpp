@@ -1,6 +1,6 @@
 /*
  * $File: game_phase_run.cpp
- * $Date: Tue Dec 28 11:30:29 2010 +0800
+ * $Date: Tue Dec 28 17:30:28 2010 +0800
  * $Author: Zhou Xinyu <zxytim@gmail.com>
  */
 /*
@@ -31,12 +31,15 @@ GamePhaseRun::GamePhaseRun()
 {
 	renderer = Renderer::instance();
 	cube = new Cube();
-	addCubeView(true, 1.0f, 0.5, 0.5);
+	addCubeView(true, 1.0f, 0, 0, 0, 0);
 }
 
 GamePhaseRun::~GamePhaseRun()
 {
 	delete cube;
+	for (std::list<CubeView *>::iterator it = cube_views.begin(); 
+			it != cube_views.end(); it ++)
+		delete *it;
 }
 
 std::string GamePhaseRun::name()
@@ -45,13 +48,15 @@ std::string GamePhaseRun::name()
 }
 
 
-void GamePhaseRun::addCubeView(bool visible, GLfloat cube_size, GLfloat relative_x, GLfloat relative_y)
+void GamePhaseRun::addCubeView(bool visible, GLfloat cube_size, GLfloat relative_x, GLfloat relative_y, GLfloat turn, GLfloat tilt)
 {
 	CubeView *cv = new CubeView();
 	cv->visible = visible;
 	cv->cube_size = cube_size;
 	cv->relative_x= relative_x;
 	cv->relative_y = relative_y;
+	cv->turn = turn;
+	cv->tilt = tilt;
 	cube_views.push_back(cv);
 }
 
@@ -64,7 +69,6 @@ int GamePhaseRun::render()
 {
 	renderer->beginRender();
 
-	
 	for (std::list<CubeView *>::iterator cube_view = cube_views.begin();
 			cube_view != cube_views.end(); cube_view ++)
 	{
@@ -82,15 +86,13 @@ int GamePhaseRun::render()
 
 		renderer->pushMatrix();
 
-		renderer->moveView(cv->position.x, cv->position.y, cv->position.z);
 
 		renderer->setColor(1, 1, 1);
-		renderer->drawLine(Point(0, 0, 0), Point(1, 1, 1));
+		renderer->moveView(cv->position.x, cv->position.y, cv->position.z);
 
 
 		renderer->rotateView(cv->turn, 0, 1, 0);
 		renderer->rotateView(cv->tilt, 1, 0, -1);
-
 
 		cube->drawCube(renderer, cv);
 

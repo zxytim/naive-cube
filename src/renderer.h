@@ -1,6 +1,6 @@
 /*
  * $File: renderer.h
- * $Date: Tue Dec 28 11:17:43 2010 +0800
+ * $Date: Tue Dec 28 17:28:42 2010 +0800
  * $Author: Zhou Xinyu <zxytim@gmail.com>
  */
 /*
@@ -82,10 +82,34 @@ class Renderer
 		void setColor(const Colorf &color);
 
 		void drawLine(const Point &a, const Point &b);
-		void drawLines(const Point *vtxs, int n);
 
-		void drawQuads(const Point &v0, const Point &v1, const Point &v2, const Point &v3);
-		void drawQuads(const Point *vtxs);
+		/*
+		 * This function draw consecutive lines with shared vertices,
+		 * every consecutive 2 vertices is a line
+		 * parameter n is the number of vertices
+		 * n - 1 lines are drawn
+		 */
+		void drawLineStrip(const Point *vtxs, int n);
+
+		/*
+		 * This function draw separate lines. Every pair of vertices
+		 * defines a line, that is: vtxs[0] and vtxs[1] make a line,
+		 * vtxs[2] and vtxs[3] make a line.
+		 * parameter n is the number of vertices 
+		 * n / 2 lines are drawn
+		 */
+		void drawLines(const Point *vtxs, int n);
+		
+		/*
+		 * This function draw connected lines from the first to last,
+		 * then back to first
+		 * n lines are drawn
+		 */
+		void drawLineLoop(const Point *vtxs, int n);
+
+		void drawQuad(const Point &v0, const Point &v1, const Point &v2, const Point &v3);
+		void drawQuad(const Point *vtxs);
+		void drawQuads(const Point *vtxs, int n);
 
 		void setNormal(const Vector &normal);
 		void setNormal(GLfloat x, GLfloat y, GLfloat z);

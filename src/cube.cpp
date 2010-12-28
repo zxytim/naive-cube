@@ -1,6 +1,6 @@
 /*
  * $File: cube.cpp
- * $Date: Tue Dec 28 11:23:57 2010 +0800
+ * $Date: Tue Dec 28 20:57:44 2010 +0800
  * $Author: Zhou Xinyu <zxytim@gmail.com>
  */
 /*
@@ -52,6 +52,8 @@ Cube::Cube(int xlen, int ylen, int zlen)
 			}
 		}
 	}
+
+	addStickers();
 }
 
 Cube::~Cube()
@@ -183,8 +185,11 @@ void Cube::drawCube(Renderer * renderer, CubeView *cv)
 			(*cubie)->drawCubie(renderer, cv->cube_size, moving_axis, moving_slice, moving_angle);
 }
 
+#include <cstdlib>
+
 void Cubie::drawCubie(Renderer * renderer, GLfloat size, Axis axis, int slice, int angle)
 {
+	renderer->pushMatrix();
 
 	Point center;
 	for (int i = 0; i < N_AXES; i ++)
@@ -198,7 +203,14 @@ void Cubie::drawCubie(Renderer * renderer, GLfloat size, Axis axis, int slice, i
 	}
 	renderer->setColor(Colorf(0, 0, 0));
 
+	Point ps[4] = {Point(0, 0, 0), Point(0, 1, 0), Point(1, 1, 0), Point(1, 0, 0)};
+	for (int i = 0; i < 4; i ++)
+		ps[i] *= size;
+
+	renderer->drawQuad(ps);
+
 	renderer->moveView(center);
+
 
 	for (int axis = 0; axis < 3; axis ++)
 	{
@@ -208,8 +220,9 @@ void Cubie::drawCubie(Renderer * renderer, GLfloat size, Axis axis, int slice, i
 			Vector normal;
 			normal[axis] = 2.0 * face - 1.0;
 			renderer->setNormal(normal);
-
 		}
 	}
+
+	renderer->popMatrix();
 }
 

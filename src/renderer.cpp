@@ -1,6 +1,6 @@
 /*
  * $File: renderer.cpp
- * $Date: Tue Dec 28 11:17:59 2010 +0800
+ * $Date: Tue Dec 28 17:29:38 2010 +0800
  * $Author: Zhou Xinyu <zxytim@gmail.com>
  */
 /*
@@ -178,8 +178,23 @@ void Renderer::drawLines(const Point *vtxs, int n)
 	glEnd();
 }
 
+void Renderer::drawLineStrip(const Point *vtxs, int n)
+{
+	glBegin(GL_LINE_STRIP);
+	for (int i = 0; i < n; i ++)
+		glVertex3f(vtxs[i].x, vtxs[i].y, vtxs[i].z);
+	glEnd();
+}
 
-void Renderer::drawQuads(const Point &v0, const Point &v1, const Point &v2, const Point &v3)
+void Renderer::drawLineLoop(const Point *vtxs, int n)
+{
+	glBegin(GL_LINE_LOOP);
+	for (int i = 0; i < n; i ++)
+		glVertex3f(vtxs[i].x, vtxs[i].y, vtxs[i].z);
+	glEnd();
+}
+
+void Renderer::drawQuad(const Point &v0, const Point &v1, const Point &v2, const Point &v3)
 {
 	glBegin(GL_QUADS);
 
@@ -191,13 +206,23 @@ void Renderer::drawQuads(const Point &v0, const Point &v1, const Point &v2, cons
 	glEnd();
 }
 
-void Renderer::drawQuads(const Point *vtxs)
+void Renderer::drawQuad(const Point *vtxs)
 {
 	glBegin(GL_QUADS);
-	
+
 	for (int i = 0; i < 4; i ++)
 		glVertex3f(vtxs[i].x, vtxs[i].y, vtxs[i].z);
-	
+
+	glEnd();
+}
+
+void Renderer::drawQuads(const Point *vtxs, int n)
+{
+	glBegin(GL_QUADS);
+
+	for (int i = 0; i < n; i ++)
+		glVertex3f(vtxs[i].x, vtxs[i].y, vtxs[i].z);
+
 	glEnd();
 }
 
