@@ -1,6 +1,6 @@
 /*
  * $File: renderer.h
- * $Date: Tue Dec 28 17:28:42 2010 +0800
+ * $Date: Wed Dec 29 14:35:36 2010 +0800
  * $Author: Zhou Xinyu <zxytim@gmail.com>
  */
 /*
@@ -69,6 +69,9 @@ class Renderer
 		void pushMatrix();
 		void popMatrix();
 
+		void pushAttrib(unsigned int attrib = GL_ALL_ATTRIB_BITS);
+		void popAttrib();
+
 		void moveView(GLfloat x_change, GLfloat y_change, GLfloat z_change);
 		void moveView(const Point &dir);
 
@@ -109,6 +112,11 @@ class Renderer
 
 		void drawQuad(const Point &v0, const Point &v1, const Point &v2, const Point &v3);
 		void drawQuad(const Point *vtxs);
+		/*
+		 * Draw Quads 4 vertices a group.
+		 * n is the number of vertices, the remaining vertices are
+		 * invalidated.
+		 */
 		void drawQuads(const Point *vtxs, int n);
 
 		void setNormal(const Vector &normal);

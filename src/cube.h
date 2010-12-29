@@ -1,6 +1,6 @@
 /*
  * $File: cube.h
- * $Date: Mon Dec 27 11:32:01 2010 +0800
+ * $Date: Wed Dec 29 14:54:51 2010 +0800
  * $Author: Zhou Xinyu <zxytim@gmail.com>
  */
 /*
@@ -31,7 +31,6 @@
 #include "math.h"
 #include "color.h"
 #include "renderer.h"
-#include "cube_view.h"
 
 class Cubie;
 
@@ -68,10 +67,7 @@ class Cube
 		 */
 		std::list<Cubie *> cubies;
 
-		/*
-		 * Draw this cube one the screen with CubeView
-		 */
-		void drawCube(Renderer * renderer, CubeView *cv);
+		void drawCube(Renderer * renderer);
 
 	private:
 
@@ -103,6 +99,8 @@ class Sticker
 
 		Point current_center;
 		Point original_center;
+
+		void drawSticker(Renderer * renderer, GLfloat size, Vector &normal);
 };
 
 class Cubie

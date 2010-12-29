@@ -1,6 +1,6 @@
 /*
 * $File: log.cpp
-* $Date: Tue Dec 07 08:47:08 2010 +0800
+* $Date: Wed Dec 29 09:20:41 2010 +0800
 * $Author: Zhou Xinyu <zxytim@gmail.com>
 */
 /*
@@ -84,7 +84,11 @@ void Log::log(LogLevel level, std::string msg)
 		if (use_file)
 			fout << msg << std::endl;
 		else
-			std::cerr << msg << std::endl;
+		{
+			if (level < 3)
+				std::cout << msg << std::endl;
+			else std::cerr << msg << std::endl;
+		}
 	}
 }
 

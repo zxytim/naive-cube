@@ -1,6 +1,6 @@
 /*
  * $File: renderer.cpp
- * $Date: Tue Dec 28 17:29:38 2010 +0800
+ * $Date: Wed Dec 29 15:03:38 2010 +0800
  * $Author: Zhou Xinyu <zxytim@gmail.com>
  */
 /*
@@ -248,6 +248,16 @@ void Renderer::pushMatrix()
 void Renderer::popMatrix()
 {
 	glPopMatrix();
+}
+
+void Renderer::pushAttrib(unsigned int attrib)
+{
+	glPushAttrib(attrib);
+}
+
+void Renderer::popAttrib()
+{
+	glPopAttrib();
 }
 
 /*

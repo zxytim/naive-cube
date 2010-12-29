@@ -1,6 +1,6 @@
 /*
  * $File: cube.cpp
- * $Date: Tue Dec 28 20:57:44 2010 +0800
+ * $Date: Wed Dec 29 15:31:11 2010 +0800
  * $Author: Zhou Xinyu <zxytim@gmail.com>
  */
 /*
@@ -38,6 +38,10 @@ Cube::Cube(int xlen, int ylen, int zlen)
 	size.z = zlen;
 	deleteCubies();
 
+	moving_axis = X;
+	moving_slice = 0;
+	moving_angle = 0;
+
 	Point center;
 	for (int i = 0; i < xlen; i ++)
 	{
@@ -69,7 +73,6 @@ void Cube::moveSlice(Axis axis, int location, Rotation direction)
 	foreach_cubie
 		(*cubie)->rotate(axis, location, direction);
 }
-
 void Cube::deleteCubies()
 {
 	foreach_cubie
@@ -89,9 +92,8 @@ void Cube::addStickers()
 		{
 			int sign = j * 2 - 1; // -1 or +1
 			int location = sign * size[i];
-			cnt ++;
 			foreach_cubie
-				(*cubie)->addSticker(color[cnt], (Axis)i, location);
+				(*cubie)->addSticker(color[cnt ++], (Axis)i, location);
 		}
 }
 
@@ -156,7 +158,7 @@ void Cubie::rotate(Axis axis, int location, Rotation direction)
 void Cubie::addSticker(const Colorf &color, Axis axis, int location)
 {
 	/*
-	 * The cubie get a sticke on the face only if it is one the required face
+	 * The cubie get a sticker on the face only if it is one the required face
 	 */
 	if (location - (location > 0 ? 1 : -1) != original_center[axis])
 		return;
@@ -175,21 +177,25 @@ bool Cubie::hasSticker()
 	return !stickers.empty();
 }
 
-void Cube::drawCube(Renderer * renderer, CubeView *cv)
+void Cube::drawCube(Renderer * renderer)
 {
-	if (!cv->visible)
-		return;
-	for (std::list<Cubie *>::iterator cubie = cubies.begin();
-			cubie != cubies.end(); cubie ++)
+	GLfloat cube_size = 0.5;
+	
+	foreach_cubie
 		if ((*cubie)->hasSticker())
-			(*cubie)->drawCubie(renderer, cv->cube_size, moving_axis, moving_slice, moving_angle);
+			(*cubie)->drawCubie(renderer, cube_size, moving_axis, moving_slice, moving_angle);
 }
 
-#include <cstdlib>
 
 void Cubie::drawCubie(Renderer * renderer, GLfloat size, Axis axis, int slice, int angle)
 {
+	/*
+	 * Draw Cubie
+	 */
 	renderer->pushMatrix();
+	renderer->pushAttrib();
+
+	GLfloat half_size = size * 0.5 * 0.9;
 
 	Point center;
 	for (int i = 0; i < N_AXES; i ++)
@@ -201,28 +207,104 @@ void Cubie::drawCubie(Renderer * renderer, GLfloat size, Axis axis, int slice, i
 		p[axis] = 1.0;
 		renderer->rotateView(angle, p);
 	}
-	renderer->setColor(Colorf(0, 0, 0));
-
-	Point ps[4] = {Point(0, 0, 0), Point(0, 1, 0), Point(1, 1, 0), Point(1, 0, 0)};
-	for (int i = 0; i < 4; i ++)
-		ps[i] *= size;
-
-	renderer->drawQuad(ps);
 
 	renderer->moveView(center);
 
-
-	for (int axis = 0; axis < 3; axis ++)
+	static Point vtxs[N_AXES * 2 * 4];
+	int cnt = 0;
+	for (int axis = 0; axis < N_AXES; axis ++)
 	{
-		int coord0 = 0, coord1 = 1;
 		for (int face = 0; face < 2; face ++)
 		{
-			Vector normal;
+			Vector normal(0, 0, 0);
 			normal[axis] = 2.0 * face - 1.0;
 			renderer->setNormal(normal);
+			Point p(0, 0, 0);
+			p[axis] = (2.0 * face - 1.0) * half_size;
+			int coord0, coord1;
+			if (p[axis] > 0)
+			{
+				coord0 = axis + 2;
+				coord1 = axis + 1;
+			}
+			else
+			{
+				coord0 = axis + 1;
+				coord1 = axis + 2;
+			}
+			for (int i = 0; i < 2; i ++)
+			{
+				p[coord0] = (2 * i - 1) * half_size;
+				for (int j = 0; j < 2; j ++)
+				{
+					int k = (i + j) % 2;
+					p[coord1] = (2 * k - 1) * half_size;
+					vtxs[cnt ++] = p;
+				}
+			}
 		}
 	}
 
+	renderer->drawQuads(vtxs, cnt);
+
+	renderer->popAttrib();
+	renderer->popMatrix();
+
+	/*
+	 * Draw Stickers
+	 */
+	foreach_sticker
+	{
+		Vector normal = (*sticker)->current_center - current_center;
+		(*sticker)->drawSticker(renderer, size, normal);
+	}
+}
+
+void Sticker::drawSticker(Renderer * renderer, GLfloat size, Vector &normal)
+{
+	renderer->pushMatrix();
+	renderer->pushAttrib();
+
+	Vector center = current_center / 2.0 * size;
+	renderer->moveView(center);
+
+	renderer->setColor(color);
+	renderer->setNormal(normal);
+
+	GLfloat half_size = size * 0.5 * 0.9;
+
+	int axis0, axis1;
+	for (int axis = 0; axis < N_AXES; axis ++)
+		if (normal[axis] != 0)
+		{
+			center = normal * 0.05 * size;
+			if (normal[axis] > 0)
+			{
+				axis0 = axis + 1;
+				axis1 = axis + 2;
+			}
+			else
+			{
+				axis0 = axis + 2;
+				axis1 = axis + 1;
+			}
+			Point p = center;
+			static Point vtxs[4];
+			int cnt = 0;
+			for (int i = 0; i < 2; i ++)
+			{
+				p[axis0] = (i * 2 - 1) * half_size;
+				for (int j = 0; j < 2; j ++)
+				{
+					int k = (i + j) % 2;
+					p[axis1] = (k * 2 - 1) * half_size;
+					vtxs[cnt ++] = p;
+				}
+			}
+			renderer->drawQuad(vtxs);
+		}
+
+	renderer->popAttrib();
 	renderer->popMatrix();
 }
 

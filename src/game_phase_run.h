@@ -1,6 +1,6 @@
 /*
  * $File: game_phase_run.h
- * $Date: Tue Dec 28 16:03:54 2010 +0800
+ * $Date: Wed Dec 29 09:15:35 2010 +0800
  * $Author: Zhou Xinyu <zxytim@gmail.com>
  */
 /*
@@ -27,7 +27,6 @@
 #include <list>
 #include "game.h"
 #include "cube.h"
-#include "cube_view.h"
 
 class GamePhaseRun : public GamePhase
 {
@@ -47,15 +46,5 @@ class GamePhaseRun : public GamePhase
 		 * The cube you are playing
 		 */
 		Cube *cube;
-
-		/*
-		 * The list of CubeViews
-		 */
-		std::list<CubeView *> cube_views;
-
-		/*
-		 * Add a cube view
-		 */
-		void addCubeView(bool visible, GLfloat cube_size, GLfloat relative_x, GLfloat relative_y, GLfloat turn, GLfloat tilt);
 };
 
