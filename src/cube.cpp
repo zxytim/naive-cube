@@ -1,6 +1,6 @@
 /*
  * $File: cube.cpp
- * $Date: Wed Dec 29 15:31:11 2010 +0800
+ * $Date: Thu Dec 30 15:57:50 2010 +0800
  * $Author: Zhou Xinyu <zxytim@gmail.com>
  */
 /*
@@ -93,7 +93,7 @@ void Cube::addStickers()
 			int sign = j * 2 - 1; // -1 or +1
 			int location = sign * size[i];
 			foreach_cubie
-				(*cubie)->addSticker(color[cnt ++], (Axis)i, location);
+				(*cubie)->addSticker(color[cnt ++], (Axis)i, location, Colorf(0, 0, 0), 0.1);
 		}
 }
 
@@ -155,7 +155,7 @@ void Cubie::rotate(Axis axis, int location, Rotation direction)
 
 }
 
-void Cubie::addSticker(const Colorf &color, Axis axis, int location)
+void Cubie::addSticker(const Colorf& color, Axis axis, int location, const Colorf &padding_color, GLfloat padding_relative_length)
 {
 	/*
 	 * The cubie get a sticker on the face only if it is one the required face
@@ -168,7 +168,9 @@ void Cubie::addSticker(const Colorf &color, Axis axis, int location)
 	sticker->original_center = sticker->current_center = original_center;
 	sticker->original_center[axis] = location;
 	sticker->current_center[axis] = location;
-	
+	sticker->padding_color = padding_color;
+	sticker->padding_relative_length = padding_relative_length;
+
 	stickers.push_back(sticker);
 }
 
@@ -195,7 +197,7 @@ void Cubie::drawCubie(Renderer * renderer, GLfloat size, Axis axis, int slice, i
 	renderer->pushMatrix();
 	renderer->pushAttrib();
 
-	GLfloat half_size = size * 0.5 * 0.9;
+	GLfloat half_size = size * 0.5 * 0.99;
 
 	Point center;
 	for (int i = 0; i < N_AXES; i ++)
@@ -268,16 +270,19 @@ void Sticker::drawSticker(Renderer * renderer, GLfloat size, Vector &normal)
 	Vector center = current_center / 2.0 * size;
 	renderer->moveView(center);
 
+	/*
+	 * Draw the sticker
+	 */
 	renderer->setColor(color);
 	renderer->setNormal(normal);
 
-	GLfloat half_size = size * 0.5 * 0.9;
+	GLfloat half_size = size * 0.5 * (1 - padding_relative_length);
 
 	int axis0, axis1;
 	for (int axis = 0; axis < N_AXES; axis ++)
 		if (normal[axis] != 0)
 		{
-			center = normal * 0.05 * size;
+			center = normal * 0.01 * size;
 			if (normal[axis] > 0)
 			{
 				axis0 = axis + 1;
@@ -304,6 +309,10 @@ void Sticker::drawSticker(Renderer * renderer, GLfloat size, Vector &normal)
 			renderer->drawQuad(vtxs);
 		}
 
+	/*
+	 * Draw the padding
+	 */
+	// TODO
 	renderer->popAttrib();
 	renderer->popMatrix();
 }

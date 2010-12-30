@@ -1,6 +1,6 @@
 /*
  * $File: cube.h
- * $Date: Wed Dec 29 14:54:51 2010 +0800
+ * $Date: Thu Dec 30 15:52:25 2010 +0800
  * $Author: Zhou Xinyu <zxytim@gmail.com>
  */
 /*
@@ -92,10 +92,11 @@ class Sticker
 		Sticker();
 		~Sticker();
 
-		/*
-		 * The color of this sticker
-		 */
 		Colorf color;
+
+		Colorf padding_color;
+		//between 0.0 ~ 1.0, the ratio between real length and a half length of the sticker
+		GLfloat padding_relative_length; 
 
 		Point current_center;
 		Point original_center;
@@ -118,7 +119,7 @@ class Cubie
 		/*
 		 * Add a sticker to one of the faces of a cubie
 		 */
-		void addSticker(const Colorf& color, Axis axis, int location);
+		void addSticker(const Colorf& color, Axis axis, int location, const Colorf &padding_color, GLfloat padding_relative_length);
 
 		/*
 		 * Whether this cubie has a sticker
