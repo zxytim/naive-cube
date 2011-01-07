@@ -5,8 +5,13 @@ OBJDIR = obj
 OBJS = $(patsubst ./%.cpp, $(OBJDIR)/%.o, $(CXXSOURCES))
 CXX = g++
 DEFINES = -DDEBUG
-CXXFLAGS = -g #-time -H #-Wall -Wextra -Werror 
-LIBS = -lGL -lglut -lGLU
+CXXFLAGS = -g \
+		   $(shell pkg-config --cflags gl) \
+		   $(shell pkg-config --cflags glu) #-time -H #-Wall -Wextra -Werror 
+LIBS = $(shell pkg-config --libs gl) \
+	   $(shell pkg-config --libs glu) \
+	   -lglut # no entry for glut in pkg-config
+
 TARGET = naive-cube
 
 #$(GCHSOURCE) 

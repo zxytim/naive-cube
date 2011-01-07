@@ -1,6 +1,6 @@
 /*
  * $File: cube.cpp
- * $Date: Thu Dec 30 15:57:50 2010 +0800
+ * $Date: Fri Dec 31 13:32:03 2010 +0800
  * $Author: Zhou Xinyu <zxytim@gmail.com>
  */
 /*
@@ -93,7 +93,8 @@ void Cube::addStickers()
 			int sign = j * 2 - 1; // -1 or +1
 			int location = sign * size[i];
 			foreach_cubie
-				(*cubie)->addSticker(color[cnt ++], (Axis)i, location, Colorf(0, 0, 0), 0.1);
+				(*cubie)->addSticker(color[cnt], (Axis)i, location, Colorf(0, 0, 0), 0.1);
+			cnt ++;
 		}
 }
 
@@ -188,12 +189,13 @@ void Cube::drawCube(Renderer * renderer)
 			(*cubie)->drawCubie(renderer, cube_size, moving_axis, moving_slice, moving_angle);
 }
 
-
 void Cubie::drawCubie(Renderer * renderer, GLfloat size, Axis axis, int slice, int angle)
 {
 	/*
 	 * Draw Cubie
 	 */
+	if (1)
+	{
 	renderer->pushMatrix();
 	renderer->pushAttrib();
 
@@ -251,10 +253,11 @@ void Cubie::drawCubie(Renderer * renderer, GLfloat size, Axis axis, int slice, i
 
 	renderer->popAttrib();
 	renderer->popMatrix();
-
+	}
 	/*
 	 * Draw Stickers
 	 */
+	if (1)
 	foreach_sticker
 	{
 		Vector normal = (*sticker)->current_center - current_center;
@@ -283,7 +286,7 @@ void Sticker::drawSticker(Renderer * renderer, GLfloat size, Vector &normal)
 		if (normal[axis] != 0)
 		{
 			center = normal * 0.01 * size;
-			if (normal[axis] > 0)
+			if (normal[axis] < 0)
 			{
 				axis0 = axis + 1;
 				axis1 = axis + 2;

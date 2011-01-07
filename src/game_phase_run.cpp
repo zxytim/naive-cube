@@ -1,6 +1,6 @@
 /*
  * $File: game_phase_run.cpp
- * $Date: Wed Dec 29 15:28:06 2010 +0800
+ * $Date: Fri Dec 31 13:13:13 2010 +0800
  * $Author: Zhou Xinyu <zxytim@gmail.com>
  */
 /*
@@ -30,7 +30,7 @@
 GamePhaseRun::GamePhaseRun()
 {
 	renderer = Renderer::instance();
-	cube = new Cube(1, 1, 1);
+	cube = new Cube(3, 3, 3);
 }
 
 GamePhaseRun::~GamePhaseRun()
@@ -51,7 +51,7 @@ int GamePhaseRun::loading()
 
 int GamePhaseRun::render()
 {
-	renderer->beginRender();
+//	renderer->beginRender();
 	renderer->pushMatrix();
 
 	renderer->moveView(0, 0, CUBE_CENTER_Z);
@@ -62,10 +62,29 @@ int GamePhaseRun::render()
 	turn += 0.2;
 	tilt += 0.3;
 
+	/*
+	const int N_QUADS = 10;
+	const Point p[4] = {Point(0, 0, 0), Point(1, 0, 0), Point(1, 1, 0), Point(0, 1, 0)};
+	GLfloat step = 1.0 / N_QUADS;
+	GLfloat size = 1.0 / N_QUADS * 3;
+	glScalef(size, size, size);
+	GLfloat t = 0;
+	for (int i = 0; i < N_QUADS; i ++)
+	{
+		glPushMatrix();
+		//glPushAttrib(GL_ALL_ATTRIB_BITS);
+		glColor3f(0, 0, t += step);
+		glTranslatef(i - N_QUADS * 0.5, 0, 0);
+		renderer->drawQuad(p);
+		//glPopAttrib();
+		glPopMatrix();
+	}
+	*/
+
 	cube->drawCube(renderer);
 
 	renderer->popMatrix();
-	renderer->endRender();
+	//renderer->endRender();
 }
 
 int GamePhaseRun::exiting()

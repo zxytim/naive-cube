@@ -1,6 +1,6 @@
 /*
 * $File: log.cpp
-* $Date: Wed Dec 29 09:20:41 2010 +0800
+* $Date: Thu Jan 06 15:33:07 2011 +0800
 * $Author: Zhou Xinyu <zxytim@gmail.com>
 */
 /*
@@ -31,18 +31,8 @@
 
 static std::string file = "log";
 static std::ofstream fout(file.c_str());
-static bool log_table[N_LOG_LEVEL] = {
-#ifdef DEBUG
-	true, 
-#else
-	false,
-#endif
-	true,
-   	true, 
-	true, 
-	true
-};
-static bool use_file = false;
+LogLevel Log::log_table;
+bool Log::use_file;
 static std::string prefix[N_LOG_LEVEL] = 
 {
 	"[DEBUG]",
@@ -54,6 +44,11 @@ static std::string prefix[N_LOG_LEVEL] =
 
 Log::Log()
 {
+	log_table = LOG_LEVEL_ALL;
+#ifndef DEBUG
+	log_table ^= LOG_LEVEL_DEBUG;
+#endif
+	use_file = false;
 }
 
 Log::~Log()
@@ -68,17 +63,20 @@ Log* Log::instance()
 
 void Log::enable(LogLevel level)
 {
-	log_table[level] = true;
+	log_table |= level;
 }
 
 void Log::disable(LogLevel level)
 {
-	log_table[level] = false;
+	if (log_table & level)
+		log_table ^= level;
 }
 
 void Log::log(LogLevel level, std::string msg)
 {
-	if (log_table[level])
+	fprintf(stdout, "HELLO");
+	std::cout << "hello" ;
+	if (log_table & level)
 	{
 		msg = prefix[level] + msg;
 		if (use_file)

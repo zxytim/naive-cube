@@ -1,6 +1,6 @@
 /*
  * $File: log.h
- * $Date: Tue Dec 07 08:21:09 2010 +0800
+ * $Date: Thu Jan 06 15:28:05 2011 +0800
  * $Author: Zhou Xinyu <zxytim@gmail.com>
  */
 /*
@@ -32,16 +32,15 @@
 
 #include <string>
 
-enum LogLevel
-{
-	LOG_LEVEL_DEBUG,
-	LOG_LEVEL_INFO,
-	LOG_LEVEL_WARNING,
-	LOG_LEVEL_ERROR,
-	LOG_LEVEL_CRITICAL,
-	N_LOG_LEVEL
-};
+#define LOG_LEVEL_DEBUG				0x01
+#define LOG_LEVEL_INFO				0x02
+#define LOG_LEVEL_WARNING			0x04
+#define LOG_LEVEL_ERROR				0x08
+#define LOG_LEVEL_CRITICAL			0x10
+#define LOG_LEVEL_ALL				0x1F
+#define N_LOG_LEVEL					5
 
+typedef unsigned int LogLevel;
 class Log
 {
 	public:
@@ -56,6 +55,8 @@ class Log
 	private:
 		Log();
 		~Log();
+		static LogLevel log_table;
+		static bool use_file;
 };
 
 #endif // HEADER_LOG

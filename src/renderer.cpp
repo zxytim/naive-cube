@@ -1,6 +1,6 @@
 /*
  * $File: renderer.cpp
- * $Date: Wed Dec 29 15:03:38 2010 +0800
+ * $Date: Fri Dec 31 13:53:44 2010 +0800
  * $Author: Zhou Xinyu <zxytim@gmail.com>
  */
 /*
@@ -56,7 +56,7 @@ void Renderer::init(int argc, char *argv[], const char * window_name, int width,
 	 */
 	glutInit(&argc, argv);
 
-	glutInitDisplayMode(GLUT_ALPHA | GLUT_RGBA | GLUT_DEPTH);
+	glutInitDisplayMode(GLUT_DEPTH | GLUT_ALPHA);
 
 	glutInitWindowSize(window_width, window_height);
 

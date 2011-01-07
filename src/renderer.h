@@ -1,6 +1,6 @@
 /*
  * $File: renderer.h
- * $Date: Wed Dec 29 14:35:36 2010 +0800
+ * $Date: Thu Dec 30 21:26:58 2010 +0800
  * $Author: Zhou Xinyu <zxytim@gmail.com>
  */
 /*

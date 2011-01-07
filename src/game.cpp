@@ -1,6 +1,6 @@
 /*
  * $File: game.cpp
- * $Date: Mon Dec 20 21:00:39 2010 +0800
+ * $Date: Thu Dec 30 17:01:28 2010 +0800
  * $Author: Zhou Xinyu <zxytim@gmail.com>
  */
 /*
@@ -129,6 +129,8 @@ void Game::render()
 {
 	renderer->beginRender();
 
+	curPhase()->render();
+
 	renderer->endRender();
 }
 
@@ -140,6 +142,8 @@ void Game::idle()
 		timer.sleep(1000 / fps / 2);
 		return;
 	}
+
+	renderer->beginRender();
 
 	switch (phase_progress)
 	{
@@ -165,6 +169,8 @@ void Game::idle()
 				next_phase = GAME_PHASE_NONE;
 			}
 	}
+
+	renderer->endRender();
 	timer.begin();
 }
 
